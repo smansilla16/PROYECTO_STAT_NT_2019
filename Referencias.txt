@@ -1,0 +1,6 @@
+Referencias:
+Consumo energía eléctrica:
+
+Clima: Datos diarios de clima de la Estación Meteorológica Carrasco Intl. de 2004 a 2018. 
+"https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv="
+Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: “The International Satellite Cloud Climatology Project, H-Series Climate Data Record Product”, Earth System Science Data, in preparation.
