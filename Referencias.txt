@@ -1,6 +1,9 @@
 Referencias:
-Consumo energÌa elÈctrica:
+Consumo energ√≠a el√©ctrica:
 
-Clima: Datos diarios de clima de la EstaciÛn MeteorolÛgica Carrasco Intl. de 2004 a 2018. 
-"https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv="
-Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: ìThe International Satellite Cloud Climatology Project, H-Series Climate Data Record Productî, Earth System Science Data, in preparation.
+Clima: Datos diarios de clima de la Estaci√≥n Meteorol√≥gica Carrasco Intl. de 2004 a 2018. 
+  "https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv="
+  Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: ‚ÄúThe International Satellite Cloud Climatology Project, H-Series Climate Data Record Product‚Äù, Earth System Science Data, in preparation.
+
+Ventas de GLP: 
+  "http://www.ursea.gub.uy/inicio/Combustibles/Gas_Licuado_Petroleo/Ventas/"
