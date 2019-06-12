@@ -1,0 +1,24 @@
+---
+title: "Proyecto final"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduccion 
+
+```{r}
+library(readxl)
+library(forcats)
+library(ggplot2)
+library(tidyverse)
+clima <- read_xlsx("clima.xlsx")
+consumoenergetico <- read_xlsx('consumoenergiaelectrica.xlsx')
+
+clima$TEMP <- (as.numeric(clima$TEMP)-32)*5/9
+clima <- rename(clima,temp_c = TEMP)
+colnames(consumoenergetico)
+gather(consumoenergetico, fuente, produccion,Hidráulica, Térmica, Eólica, Biomasa, Fotovoltaica )
+```
