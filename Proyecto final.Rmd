@@ -19,6 +19,17 @@ consumoenergetico <- read_xlsx('consumoenergiaelectrica.xlsx')
 
 clima$TEMP <- (as.numeric(clima$TEMP)-32)*5/9
 clima <- rename(clima,temp_c = TEMP)
+
+clima2 <- clima %>% mutate(Fecha = paste( substr(clima$YEARMODA,1,4), "-", substr(clima$YEARMODA,5,6), "-", substr(clima$YEARMODA,7,8), sep="")) %>% select(c(Fecha, temp_c))
+
+consumoenergetico <- consumoenergetico %>% mutate(Fecha = as.character(Fecha))
+
 colnames(consumoenergetico)
-gather(consumoenergetico, fuente, produccion,Hidráulica, Térmica, Eólica, Biomasa, Fotovoltaica )
+
+consumoe <- left_join(consumoenergetico, clima2, by = "Fecha")
+
+
+gather(consumoenergetico, fuente, produccion,`Hidráulica`, `Térmica`, `Eólica`, Biomasa, Fotovoltaica )
+
+
 ```
