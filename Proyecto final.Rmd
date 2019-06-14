@@ -7,29 +7,49 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduccion 
+## Introduccion
+
+(..Problema..) Nuestra pregunta principal sería ¿el consumo de electricidad nacional depende del clima? Para responderla obtuvimos registros del clima y del consumo energético nacional y los asociamos por fecha.
 
 ```{r}
 library(readxl)
 library(forcats)
 library(ggplot2)
 library(tidyverse)
+library(lubridate)
+
+# clima por fecha
 clima <- read_xlsx("clima.xlsx")
-consumoenergetico <- read_xlsx('consumoenergiaelectrica.xlsx')
 
-clima$TEMP <- (as.numeric(clima$TEMP)-32)*5/9
-clima <- rename(clima,temp_c = TEMP)
+# consumo por fecha
+consumoen <- read_xlsx('consumoenergiaelectrica.xlsx')
 
-clima2 <- clima %>% mutate(Fecha = paste( substr(clima$YEARMODA,1,4), "-", substr(clima$YEARMODA,5,6), "-", substr(clima$YEARMODA,7,8), sep="")) %>% select(c(Fecha, temp_c))
+# para asociar las tablas por fecha convertimos a tipo fecha
+# las variables correspondientes, en la tabla de clima el formato
+# de la variable fecha es una cadena de caracteres en la forma YYYYmmdd,
+# en la tabla de consumo energético el formato de la variable fecha
+# es representado en formato POSIXct, utilizamos la función ymd()
+# de lubridate para la conversión a un formato común
 
-consumoenergetico <- consumoenergetico %>% mutate(Fecha = as.character(Fecha))
+# simplificación de la tabla de clima según las variables que nos interesan
+# y conversión de temperatura de °F a °C
+clima.simple <- clima %>%
+                mutate(Fecha = ymd(YEARMODA),
+                       TEMP = (as.numeric(TEMP)-32)*5/9) %>%
+                rename(temp_c = TEMP) %>%
+                select(c(Fecha, temp_c))
 
-colnames(consumoenergetico)
+# primera simplificación de la tabla de consumo energético según
+# las variables que nos interesan y asociación con la tabla de clima
+consumoen.simple <- consumoen %>%
+                    mutate(Fecha = ymd(Fecha)) %>%
+                    left_join(clima2, by = "Fecha")
 
-consumoe <- left_join(consumoenergetico, clima2, by = "Fecha")
+# segunda simplificación de la tabla de consumo energético según
+# las variables que nos interesan
+consumoen.simple2 <- consumoen.simple %>%
+                     gather(fuente, produccion,`Hidráulica`, `Térmica`, `Eólica`, Biomasa, Fotovoltaica)
 
-
-gather(consumoenergetico, fuente, produccion,`Hidráulica`, `Térmica`, `Eólica`, Biomasa, Fotovoltaica )
-
+colnames(consumoen.simple2)
 
 ```
