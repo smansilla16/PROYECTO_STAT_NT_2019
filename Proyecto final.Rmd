@@ -11,6 +11,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 (..Problema..) Nuestra pregunta principal sería ¿el consumo de electricidad nacional depende del clima? Para responderla obtuvimos registros del clima y del consumo energético nacional y los asociamos por fecha.
 
+Relaciones entre variables:
+
+produccion = Hidráulica + Térmica + Eólica + Biomasa + Fotovoltaica + exportaciones + consumos
+
+exportaciones = Exportación + Exp. Otros Agentes + Exp. Salto Grande
+
+consumos = Cons. de Generación
+
+Demanda = producción + Importación - exportaciones - consumos
+
+
+
 ```{r}
 library(readxl)
 library(forcats)
@@ -43,7 +55,7 @@ clima.simple <- clima %>%
 # las variables que nos interesan y asociación con la tabla de clima
 consumoen.simple <- consumoen %>%
                     mutate(Fecha = ymd(Fecha)) %>%
-                    left_join(clima2, by = "Fecha")
+                    left_join(clima.simple, by = "Fecha")
 
 # segunda simplificación de la tabla de consumo energético según
 # las variables que nos interesan
