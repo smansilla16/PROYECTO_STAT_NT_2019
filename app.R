@@ -72,7 +72,12 @@ barralateral <- dashboardSidebar(
 
       menuItem("Gráfico Producción - Clima",
                tabName = "grafico1",
+               icon = icon("chart-area")),
+      
+      menuItem("Gráfico Demanda - Clima",
+               tabName = "grafico2",
                icon = icon("chart-area"))
+      
     )
   )
 )
@@ -97,9 +102,25 @@ cuerpo <- dashboardBody(
         width = "100%",
         height="100%"
       )
-    )    
-  )
-)
+    ),    
+    conditionalPanel(
+      condition = "input.tabs == 'grafico2'",
+      box(
+        title = "Grafico de Demanda según la temperatura",
+        plotOutput("grafica2.plot", height = 400),
+        width = "100%",
+        height="100%"
+      
+    )
+  )))
+  
+  
+  
+  
+    
+  
+  
+
 
 
 ui <- dashboardPage(
@@ -119,6 +140,17 @@ server <- function(input, output) {
           print(gg)
       }
     })
-}
+    output$grafica2.plot <- renderPlot({
+      if(input$tabs == "grafico2")
+      {
+        g2 <- consumoen.simple2 %>%
+          ggplot(aes(x = temp_c, y = Demanda))+
+          geom_point()
+        print(g2)
+        
+      }
+    })
+
+    }
 
 shinyApp(ui, server)
