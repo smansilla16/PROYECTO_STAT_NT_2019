@@ -40,7 +40,7 @@ consumoen.simple <- consumoen %>%
 # segunda simplificación de la tabla de consumo energético según
 # las variables que nos interesan
 consumoen.simple2 <- consumoen.simple %>%
-                     gather(fuente, produccion,`Hidráulica`, `Térmica`, `Eólica`, Biomasa, Fotovoltaica)
+                     gather(Fuente, Producción,`Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`)
 
 
 titulo <- dashboardHeader(
@@ -52,7 +52,7 @@ intro.txt <- "<p>(..Problema..) Nuestra pregunta principal sería ¿el consumo d
 <p>Para responderla obtuvimos registros del clima y del consumo energético nacional y los asociamos por fecha.</p>
 <p>Relaciones entre variables:</p>
 <pre>
-produccion = Hidráulica + Térmica + Eólica + Biomasa + Fotovoltaica + exportaciones + consumos
+Producción = Hidráulica + Térmica + Eólica + Biomasa + Fotovoltaica + exportaciones + consumos
 
 exportaciones = Exportación + Exp. Otros Agentes + Exp. Salto Grande
 
@@ -76,6 +76,10 @@ barralateral <- dashboardSidebar(
       
       menuItem("Gráfico Demanda - Clima",
                tabName = "grafico2",
+               icon = icon("chart-area")),
+      
+      menuItem("Gráfico Demanda - Producción",
+               tabName = "grafico3",
                icon = icon("chart-area"))
       
     )
@@ -110,17 +114,20 @@ cuerpo <- dashboardBody(
         plotOutput("grafica2.plot", height = 400),
         width = "100%",
         height="100%"
-      
-    )
-  )))
+      )
+    ),
+    conditionalPanel(
+      condition = "input.tabs == 'grafico3'",
+      box(
+        title = "Grafico de Demanda y Producción energética",
+        plotOutput("grafica3.plot", height = 400),
+        width = "100%",
+        height="100%"
+      )
   
+  )
+))
   
-  
-  
-    
-  
-  
-
 
 
 ui <- dashboardPage(
@@ -134,19 +141,45 @@ server <- function(input, output) {
 
       if(input$tabs == "grafico1")
       {
-          gg <- consumoen.simple2 %>%
-                ggplot(aes(x = temp_c, y = produccion, color = fuente)) +
-                geom_point()
-          print(gg)
+        g1 <-consumoen.simple2 %>% 
+          group_by(month=floor_date(Fecha, "month"),Fuente) %>% filter(Producción!=0) %>%
+          summarise(ProducciónTotal=sum(Producción),TempMedia=mean(temp_c)) %>% 
+          ggplot(aes(x = TempMedia, y = ProducciónTotal/1000,color=Fuente)) +
+          geom_point() + geom_smooth(method="lm",se=FALSE) +
+          labs(x="Temperatura media mensual (ºC)",y="Producción energética total mensual (GWh)",color="Fuente") +
+          theme(aspect.ratio = 1)
+        print(g1)
       }
     })
     output$grafica2.plot <- renderPlot({
       if(input$tabs == "grafico2")
       {
-        g2 <- consumoen.simple2 %>%
-          ggplot(aes(x = temp_c, y = Demanda))+
-          geom_point()
+        g2 <- consumoen.simple2 %>% filter(Fecha<="2018-12-31") %>% 
+          group_by(month=floor_date(Fecha, "month")) %>% 
+          summarise(DemandaTotal=sum(Demanda)/1000,TempMedia=mean(temp_c)) %>% 
+          ggplot(aes(x = TempMedia, y = DemandaTotal/1000)) +
+          geom_point() + geom_smooth(se=FALSE) +
+          labs(x="Temperatura media mensual (ºC)",y="Demanda energética total mensual (GWh)",color="Fuente") +
+          theme(aspect.ratio = 1)
         print(g2)
+        
+      }
+    })
+    
+    output$grafica3.plot <- renderPlot({
+      if(input$tabs == "grafico3")
+      {
+        g3 <- consumoen.simple2 %>% select(Fecha,Demanda,Producción,Fuente) %>%
+          mutate(Demanda=Demanda/5) %>%
+          filter(Fecha<="2018-12-31") %>% 
+          gather(key="Clase",value="Energía",Demanda,Producción) %>%
+          group_by(month=floor_date(Fecha, "month"),Clase) %>%
+          summarize(EnergíaTotal=sum(Energía)/1000) %>% 
+          ggplot(aes(x=month,y=EnergíaTotal,color=Clase)) + 
+          geom_point() + geom_smooth(method="lm",se = FALSE) +
+          labs(x="Fecha", y="Energía total mensual(GWh)") + 
+          theme(aspect.ratio = 1)
+        print(g3)
         
       }
     })

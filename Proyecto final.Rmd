@@ -3,13 +3,15 @@ title: "Proyecto final"
 output: pdf_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, echo=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
 ## Introduccion
 
-(..Problema..) Nuestra pregunta principal sería ¿el consumo de electricidad nacional depende del clima? Para responderla obtuvimos registros del clima y del consumo energético nacional y los asociamos por fecha.
+(..Problema..) Nuestra pregunta principal sería: ¿El consumo de electricidad nacional depende de las condiciones meteorológicas? Para responder, obtuvimos registros meteorológicos de consumo energético nacional y los asociamos por fecha. Los datos meteorológicos diarios, fueron obtenidos de la Estación Meteorológica Carrasco Intl. de 1958 hasta la actualidad, en la siguiente URL:
+  "https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv=", Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: “The International Satellite Cloud Climatology Project, H-Series Climate Data Record Product”, Earth System Science Data, in preparation.
+  Por su parte, los datos de consumo y producción de energía eléctrica fueron obtenidos para el periodo entre el 1/1/2004 hasta la actualidad, de la página web de UTE en la siguiente URL: "https://apps.ute.com.uy/SgePublico/ConsHistCompEnergetica.aspx". 
 
 Relaciones entre variables:
 
@@ -23,7 +25,7 @@ Demanda = producción + Importación - exportaciones - consumos
 
 
 
-```{r}
+```{r, echo=FALSE}
 library(readxl)
 library(forcats)
 library(ggplot2)
@@ -60,8 +62,27 @@ consumoen.simple <- consumoen %>%
 # segunda simplificación de la tabla de consumo energético según
 # las variables que nos interesan
 consumoen.simple2 <- consumoen.simple %>%
-                     gather(fuente, produccion,`Hidráulica`, `Térmica`, `Eólica`, Biomasa, Fotovoltaica)
+                     gather(Fuente, Producción,`Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`)
 
 colnames(consumoen.simple2)
+
+```
+
+Relación entre consumo y producción de energía eléctrica, para el período comprendido entre el 1/1/2004 y el 31/12/2018. Mensual y anual. En rojo el consumo, en azul, la producción. Ambos en GWh. ////ESTO LO PODEMOS AGREGAR A LA APP CON UNA VENTANA DESPLEGABLE QUE PERMITA CAMBIAR SI LOS DATOS ESTAN AGRUPADOS POR MES O POR AÑO
+
+```{r, echo=FALSE}
+consumoen.simple2 %>% select(Fecha,Demanda,Producción,Fuente) %>%
+          mutate(Demanda=Demanda/5) %>%
+          filter(Fecha<="2018-12-31") %>% 
+          gather(key="Clase",value="Energía",Demanda,Producción) %>%
+          group_by(month=floor_date(Fecha, "month"),Clase) %>%
+          summarize(EnergíaTotal=sum(Energía)/1000) %>% 
+          ggplot(aes(x=month,y=EnergíaTotal,color=Clase)) + 
+          geom_point() + geom_smooth(method="lm",se = FALSE) +
+          labs(x="Fecha", y="Energía (GWh)") + 
+          theme(aspect.ratio = 1)
+```
+
+```{r, echo=FALSE}
 
 ```
