@@ -47,14 +47,23 @@ consumoEE.datos2 <- consumoEE.datos %>%
   mutate(`Producción Total` = (`Hidráulica` + `Térmica` + `Eólica` + `Biomasa` + `Fotovoltaica`)/1000,
          `Exportación Total` = (`Exportación` + `Exp. Otros Agentes` + `Exp. Salto Grande`)/1000) %>%
   select(-`Exportación`, -`Exp. Otros Agentes`, -`Exp. Salto Grande`) %>%
-  gather(Fuente, `Producción`,
-         `Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`) %>%
-  mutate(`Producción` = `Producción`/1000,
-         `Demanda` = `Demanda`/1000,
-         `Importación` = `Producción`/1000,
-         `Cons. de Generación`)
+  mutate(`Demanda` = `Demanda`/1000,
+         `Importación` = `Importación`/1000,
+         `Cons. de Generación` = `Cons. de Generación`/1000)
 
 colnames(consumoEE.datos2)
+
+head(consumoEE.datos2)
+
+# tercera simplificación de la tabla
+consumoEE.datos3 <- consumoEE.datos2 %>%
+  gather(Fuente, `Producción`,
+         `Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`) %>%
+  mutate(`Producción` = `Producción`/1000)
+
+colnames(consumoEE.datos3)
+
+head(consumoEE.datos3)
 
 agrupacion.texts <- c("day", "week", "month", "bimonth", "quarter", "season", "halfyear", "year")
 agrupacion.textos <- c("diario", "semanal", "mensual", "bimensual", "trimestral", "estacional", "semestral", "anual")

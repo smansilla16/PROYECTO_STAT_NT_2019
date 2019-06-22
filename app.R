@@ -112,17 +112,17 @@ server <- function(input, output) {
 
       if(input$tabs == "grafico1")
       {
-        g1 <-consumoEE.datos2 %>% 
+        g1 <-consumoEE.datos3 %>% 
           group_by(month = floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Fuente) %>%
           filter(Producción!=0, Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>%
-          summarise(ProducciónTotal=sum(Producción),
+          summarise(ProducciónPromedio=mean(Producción),
                     TempMedia=mean(temp_c)) %>% 
           ggplot(aes(x = TempMedia,
-                     y = ProducciónTotal,
+                     y = ProducciónPromedio,
                      color=Fuente)) +
           geom_point() + geom_smooth(method="lm",se=FALSE) +
           labs(x=paste("Temperatura media", input$agrupacion,"(ºC)"),
-               y=paste("Producción energética total", input$agrupacion ,"(GWh)"),
+               y=paste("Producción energética media", input$agrupacion ,"(GWh)"),
                color="Fuente") +
           theme(aspect.ratio = 1)
         print(g1)
@@ -133,7 +133,7 @@ server <- function(input, output) {
       if(input$tabs == "grafico2")
       {
         g2 <- consumoEE.datos2 %>%
-          filter(Producción!=0, Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
+          filter(Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
           group_by(month = floor_date(Fecha,  agrupacion.texto2text(input$agrupacion))) %>% 
           summarise(DemandaPromedio=mean(Demanda),TempMedia=mean(temp_c)) %>% 
           ggplot(aes(x = TempMedia, y = DemandaPromedio)) +
@@ -150,7 +150,10 @@ server <- function(input, output) {
     output$grafica3.plot <- renderPlot({
       if(input$tabs == "grafico3")
       {
-        g3 <- consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`, Fuente) %>%
+        cat(input$rango)
+        cat("  ") # hay algún problema con el rango de fechas !!!
+        
+        g3 <- consumoEE.datos3 %>% select(Fecha, Demanda, `Producción Total`) %>%
           filter(Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
           gather(key="Clase",value="Energía", Demanda, `Producción Total`) %>%
           group_by(month=floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Clase) %>%

@@ -25,27 +25,30 @@ cat(intro_texto)
 
 ```{r, echo=FALSE}
 source("carga_datos.R", encoding = "UTF-8")
+nrow(consumoEE.datos2)
+nrow(consumoEE.datos3)
 ```
+
 
 Relación entre consumo y producción de energía eléctrica, para el período comprendido entre el 1/1/2004 y el 31/12/2018. Mensual y anual. En rojo el consumo, en azul, la producción. Ambos en GWh. ////ESTO LO PODEMOS AGREGAR A LA APP CON UNA VENTANA DESPLEGABLE QUE PERMITA CAMBIAR SI LOS DATOS ESTAN AGRUPADOS POR MES O POR AÑO
 
 ```{r, echo=FALSE}
- consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`, Fuente) %>%
+ consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`) %>%
            filter(Fecha<="2018-12-31") %>% 
            gather(key="Clase", value="Energía", Demanda, `Producción Total`) %>%
            group_by(month = floor_date(Fecha, "month"), Clase) %>%
-           summarize(`EnergíaTotal` = sum(`Energía`)) %>% 
+           summarize(`EnergíaTotal`=sum(`Energía`)) %>% 
            ggplot(aes(x=month, y=`EnergíaTotal`, color = Clase)) + 
            geom_point() + geom_smooth(method="lm", se = FALSE) +
-           labs(x = "Fecha", y = "Energía (GWh)") + 
+           labs(x = "Fecha", y = "Energía total (GWh)") + 
            theme(aspect.ratio = 1)
 
 ```
 
 ```{r, echo=FALSE}
- consumoEE.datos2 %>%
+ consumoEE.datos3 %>%
    group_by(Estacion = floor_date(Fecha, "season"))%>%
-   summarise(Demanda = sum(Demanda))%>%
+   summarise(Demanda = mean(Demanda))%>%
    filter(Estacion < "2019-06-01", Estacion > "2003-12-01"	 )%>%
    ggplot(aes(x = Estacion, y = Demanda))+
    geom_line() +
