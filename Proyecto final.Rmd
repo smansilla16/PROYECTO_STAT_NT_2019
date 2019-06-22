@@ -1,6 +1,8 @@
 ---
 title: "Proyecto final"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, echo=FALSE}
@@ -9,88 +11,39 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Introduccion
 
-(..Problema..) Nuestra pregunta principal sería: ¿El consumo de electricidad nacional depende de las condiciones meteorológicas? Para responder, obtuvimos registros meteorológicos de consumo energético nacional y los asociamos por fecha. Los datos meteorológicos diarios, fueron obtenidos de la Estación Meteorológica Carrasco Intl. de 1958 hasta la actualidad, en la siguiente URL:
-  "https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv=", Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: “The International Satellite Cloud Climatology Project, H-Series Climate Data Record Product”, Earth System Science Data, in preparation.
-  Por su parte, los datos de consumo y producción de energía eléctrica fueron obtenidos para el periodo entre el 1/1/2004 hasta la actualidad, de la página web de UTE en la siguiente URL: "https://apps.ute.com.uy/SgePublico/ConsHistCompEnergetica.aspx". 
-
-Relaciones entre variables:
-
-produccion = Hidráulica + Térmica + Eólica + Biomasa + Fotovoltaica + exportaciones + consumos
-
-exportaciones = Exportación + Exp. Otros Agentes + Exp. Salto Grande
-
-consumos = Cons. de Generación
-
-Demanda = producción + Importación - exportaciones - consumos
-
+```{r intro, echo=FALSE, results='asis'}
+source("carga_textos.R")
+cat(intro_texto)
+```
 
 
 ```{r, echo=FALSE}
-library(readxl)
-library(forcats)
-library(ggplot2)
-library(tidyverse)
-library(lubridate)
-library(ggpmisc)
-
-# clima por fecha
-clima <- read_xlsx("clima.xlsx")
-
-# consumo por fecha
-consumoen <- read_xlsx('consumoenergiaelectrica.xlsx')
-
-# para asociar las tablas por fecha convertimos a tipo fecha
-# las variables correspondientes, en la tabla de clima el formato
-# de la variable fecha es una cadena de caracteres en la forma YYYYmmdd,
-# en la tabla de consumo energético el formato de la variable fecha
-# es representado en formato POSIXct, utilizamos la función ymd()
-# de lubridate para la conversión a un formato común
-
-# simplificación de la tabla de clima según las variables que nos interesan
-# y conversión de temperatura de °F a °C
-clima.simple <- clima %>%
-  mutate(Fecha = ymd(YEARMODA), TEMP = (as.numeric(TEMP)-32)*5/9, MAX = (as.numeric(MAX)-32)*5/9, MIN = (as.numeric(MIN)-32)*5/9) %>%
-  rename(temp_c = TEMP) %>%
-  select(c(Fecha, temp_c, MIN, MAX))
-
-# primera simplificación de la tabla de consumo energético según
-# las variables que nos interesan y asociación con la tabla de clima
-consumoen.simple <- consumoen %>%
-                    mutate(Fecha = ymd(Fecha)) %>%
-                    left_join(clima.simple, by = "Fecha")
-
-# segunda simplificación de la tabla de consumo energético según
-# las variables que nos interesan
-consumoen.simple2 <- consumoen.simple %>%
-                     gather(Fuente, Producción,`Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`)
-
-colnames(consumoen.simple2)
-
+source("carga_datos.R", encoding = "UTF-8")
 ```
 
 Relación entre consumo y producción de energía eléctrica, para el período comprendido entre el 1/1/2004 y el 31/12/2018. Mensual y anual. En rojo el consumo, en azul, la producción. Ambos en GWh. ////ESTO LO PODEMOS AGREGAR A LA APP CON UNA VENTANA DESPLEGABLE QUE PERMITA CAMBIAR SI LOS DATOS ESTAN AGRUPADOS POR MES O POR AÑO
 
 ```{r, echo=FALSE}
-consumoen.simple2 %>% select(Fecha,Demanda,Producción,Fuente) %>%
-          mutate(Demanda=Demanda/5) %>%
-          filter(Fecha<="2018-12-31") %>% 
-          gather(key="Clase",value="Energía",Demanda,Producción) %>%
-          group_by(month=floor_date(Fecha, "month"),Clase) %>%
-          summarize(EnergíaTotal=sum(Energía)/1000) %>% 
-          ggplot(aes(x=month,y=EnergíaTotal,color=Clase)) + 
-          geom_point() + geom_smooth(method="lm",se = FALSE) +
-          labs(x="Fecha", y="Energía (GWh)") + 
-          theme(aspect.ratio = 1)
+ consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`, Fuente) %>%
+           filter(Fecha<="2018-12-31") %>% 
+           gather(key="Clase", value="Energía", Demanda, `Producción Total`) %>%
+           group_by(month = floor_date(Fecha, "month"), Clase) %>%
+           summarize(`EnergíaTotal` = sum(`Energía`)) %>% 
+           ggplot(aes(x=month, y=`EnergíaTotal`, color = Clase)) + 
+           geom_point() + geom_smooth(method="lm", se = FALSE) +
+           labs(x = "Fecha", y = "Energía (GWh)") + 
+           theme(aspect.ratio = 1)
+
 ```
 
 ```{r, echo=FALSE}
-consumoen.simple2%>%
-  group_by(Estacion = floor_date(Fecha, "season"))%>%
-  summarise(Demanda = sum(Demanda))%>%
-  filter(Estacion < "2019-06-01", Estacion > "2003-12-01"	 )%>%
-  ggplot(aes(x = Estacion, y = Demanda))+
-  geom_line() +
-  theme(aspect.ratio = 1/3)+
-  stat_peaks(colour = "blue", geom = "text",vjust = -0.5, angle = -45)+
-  labs(x = "Fecha en trimestres", y = "Demanda de energia", title = "¿Como se comporta la demanda de energia al dividirla por estacion?")
+ consumoEE.datos2 %>%
+   group_by(Estacion = floor_date(Fecha, "season"))%>%
+   summarise(Demanda = sum(Demanda))%>%
+   filter(Estacion < "2019-06-01", Estacion > "2003-12-01"	 )%>%
+   ggplot(aes(x = Estacion, y = Demanda))+
+   geom_line() +
+   theme(aspect.ratio = 1/3)+
+   stat_peaks(colour = "blue", geom = "text",vjust = -0.5, angle = -45)+
+   labs(x = "Fecha en trimestres", y = "Demanda de energia", title = "¿Como se comporta la demanda de energia al dividirla por estacion?")
 ```
