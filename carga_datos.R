@@ -1,8 +1,6 @@
 if(!exists("datos_cargados"))
 {
   
-datos_cargados <- TRUE
-
 library(shiny)
 library(shinydashboard)
 library(tidyverse)
@@ -13,12 +11,13 @@ library(readxl)
 library(forcats)
 library(lubridate)
 
+library(here)
 
 # clima por fecha
-clima <- read_xlsx("clima.xlsx")
+clima <- read_xlsx(here("datos", "clima.xlsx"))
 
 # consumo por fecha
-consumoEE <- read_xlsx('consumoenergiaelectrica.xlsx')
+consumoEE <- read_xlsx(here("datos", "consumoenergiaelectrica.xlsx"))
 
 # para asociar las tablas por fecha convertimos a tipo fecha
 # las variables correspondientes, en la tabla de clima el formato
@@ -58,5 +57,7 @@ consumoEE.datos2 <- consumoEE.datos %>%
          `Cons. de Generación`)
 
 colnames(consumoEE.datos2)
+
+datos_cargados <- TRUE
 
 }

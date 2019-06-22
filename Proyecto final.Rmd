@@ -1,8 +1,14 @@
 ---
-title: "Proyecto final"
+title: 'Proyecto final - Consumo de Energía Eléctrica y Clima'
+csl: springer-lecture-notes-in-computer-science.csl
+link-citations: yes
 output:
   html_document:
     df_print: paged
+  pdf_document: default
+nocite: '@*'
+linkcolor: blue
+bibliography: Referencias.bib
 ---
 
 ```{r setup, echo=FALSE}
@@ -47,3 +53,5 @@ Relación entre consumo y producción de energía eléctrica, para el período c
    stat_peaks(colour = "blue", geom = "text",vjust = -0.5, angle = -45)+
    labs(x = "Fecha en trimestres", y = "Demanda de energia", title = "¿Como se comporta la demanda de energia al dividirla por estacion?")
 ```
+
+## Referencias

@@ -1,8 +1,9 @@
 
-<p>Nuestra pregunta principal sería: ¿El consumo de electricidad nacional depende de las condiciones meteorológicas? Para responder, obtuvimos registros meteorológicos de consumo energético nacional y los asociamos por fecha.</p>
-<p>Los datos meteorológicos diarios, fueron obtenidos de la Estación Meteorológica Carrasco Intl. de 1958 hasta la actualidad, en la siguiente URL:
-  "https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv=", Young, A. H., K. R. Knapp, A. Inamdar, W. B. Rossow, and W. Hankins, 2017: “The International Satellite Cloud Climatology Project, H-Series Climate Data Record Product”, Earth System Science Data, in preparation.</p>
-<p>Por su parte, los datos de consumo y producción de energía eléctrica fueron obtenidos para el periodo entre el 1/1/2004 hasta la actualidad, de la página web de UTE en la siguiente URL: "https://apps.ute.com.uy/SgePublico/ConsHistCompEnergetica.aspx".</p>
+<p>Nuestra pregunta principal sería: ¿El consumo de electricidad nacional depende de las condiciones meteorológicas? Para responderla, obtuvimos registros meteorológicos de consumo energético nacional y los asociamos por fecha.</p>
+
+<p>Los datos meteorológicos diarios fueron obtenidos de la @ref.clima, de 1958 hasta la actualidad.</p>
+
+<p>Por su parte, los datos de consumo y producción de energía eléctrica fueron obtenidos para el periodo entre el 1/1/2004 hasta la actualidad, de la página web de @ref.ute</p>
 
 <pre>
 Relaciones entre variables:
