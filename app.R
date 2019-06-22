@@ -1,14 +1,18 @@
 # Aplicación con exploraciones de los datos: Consumo de electricidad - Clima,
 # a publicar en shinyapps.io 
 
+library(shiny)
+library(shinydashboard)
+library(shinyWidgets)
+
 source("carga_datos.R", encoding = "UTF-8")
 
 source("carga_textos.R", encoding = "UTF-8")
 
 
 titulo <- dashboardHeader(
-  title = "Consumo de electricidad - Clima",
-  titleWidth = 350
+  title = "Consumo de Energía Electrica y Clima",
+  titleWidth = 400
 )
 
 
@@ -30,8 +34,25 @@ barralateral <- dashboardSidebar(
       
       menuItem("Gráfico Demanda - Producción",
                tabName = "grafico3",
-               icon = icon("chart-area"))
+               icon = icon("chart-area")),
       
+      menuItem("Control",
+               tabName = "control",
+               icon = icon("gamepad"),
+               sliderTextInput(
+                 inputId = "agrupacion",
+                 label = "Agrupación de datos:",
+                 choices = agrupacion.textos,
+                 selected = agrupacion.textos[3]
+               ),
+               sliderInput(
+                 inputId = "rango",
+                 label = "Rango de fechas:",
+                 min = rango.min,
+                 max = rango.max,
+                 value = c(rango.min, rango.max),
+                 timeFormat="%Y-%m-%d"
+              ))
     )
   )
 )
@@ -92,24 +113,34 @@ server <- function(input, output) {
       if(input$tabs == "grafico1")
       {
         g1 <-consumoEE.datos2 %>% 
-          group_by(month=floor_date(Fecha, "month"),Fuente) %>% filter(Producción!=0) %>%
-          summarise(ProducciónTotal=sum(Producción),TempMedia=mean(temp_c)) %>% 
-          ggplot(aes(x = TempMedia, y = ProducciónTotal/1000,color=Fuente)) +
+          group_by(month = floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Fuente) %>%
+          filter(Producción!=0, Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>%
+          summarise(ProducciónTotal=sum(Producción),
+                    TempMedia=mean(temp_c)) %>% 
+          ggplot(aes(x = TempMedia,
+                     y = ProducciónTotal,
+                     color=Fuente)) +
           geom_point() + geom_smooth(method="lm",se=FALSE) +
-          labs(x="Temperatura media mensual (ºC)",y="Producción energética total mensual (GWh)",color="Fuente") +
+          labs(x=paste("Temperatura media", input$agrupacion,"(ºC)"),
+               y=paste("Producción energética total", input$agrupacion ,"(GWh)"),
+               color="Fuente") +
           theme(aspect.ratio = 1)
         print(g1)
       }
     })
+
     output$grafica2.plot <- renderPlot({
       if(input$tabs == "grafico2")
       {
-        g2 <- consumoEE.datos2 %>% filter(Fecha<="2018-12-31") %>% 
-          group_by(month=floor_date(Fecha, "month")) %>% 
-          summarise(DemandaTotal=sum(Demanda)/1000,TempMedia=mean(temp_c)) %>% 
-          ggplot(aes(x = TempMedia, y = DemandaTotal/1000)) +
+        g2 <- consumoEE.datos2 %>%
+          filter(Producción!=0, Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
+          group_by(month = floor_date(Fecha,  agrupacion.texto2text(input$agrupacion))) %>% 
+          summarise(DemandaPromedio=mean(Demanda),TempMedia=mean(temp_c)) %>% 
+          ggplot(aes(x = TempMedia, y = DemandaPromedio)) +
           geom_point() + geom_smooth(se=FALSE) +
-          labs(x="Temperatura media mensual (ºC)",y="Demanda energética total mensual (GWh)",color="Fuente") +
+          labs(x=paste("Temperatura media", input$agrupacion,"(ºC)"),
+               y=paste("Demanda energética media", input$agrupacion ,"(GWh)"),
+               color="Fuente") +
           theme(aspect.ratio = 1)
         print(g2)
         
@@ -119,18 +150,17 @@ server <- function(input, output) {
     output$grafica3.plot <- renderPlot({
       if(input$tabs == "grafico3")
       {
-        g3 <- consumoEE.datos2 %>% select(Fecha,Demanda,Producción,Fuente) %>%
-          mutate(Demanda=Demanda/5) %>%
-          filter(Fecha<="2018-12-31") %>% 
-          gather(key="Clase",value="Energía",Demanda,Producción) %>%
-          group_by(month=floor_date(Fecha, "month"),Clase) %>%
-          summarize(EnergíaTotal=sum(Energía)/1000) %>% 
+        g3 <- consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`, Fuente) %>%
+          filter(Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
+          gather(key="Clase",value="Energía", Demanda, `Producción Total`) %>%
+          group_by(month=floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Clase) %>%
+          summarize(EnergíaTotal=sum(Energía)) %>% 
           ggplot(aes(x=month,y=EnergíaTotal,color=Clase)) + 
           geom_point() + geom_smooth(method="lm",se = FALSE) +
-          labs(x="Fecha", y="Energía total mensual(GWh)") + 
+          labs(x="Fecha",
+               y=paste("Energía total", input$agrupacion ,"(GWh)")) + 
           theme(aspect.ratio = 1)
         print(g3)
-        
       }
     })
 

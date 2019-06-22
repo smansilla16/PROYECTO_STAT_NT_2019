@@ -1,8 +1,6 @@
 if(!exists("datos_cargados"))
 {
   
-library(shiny)
-library(shinydashboard)
 library(tidyverse)
 library(ggplot2)
 library(ggpmisc)
@@ -57,6 +55,13 @@ consumoEE.datos2 <- consumoEE.datos %>%
          `Cons. de Generación`)
 
 colnames(consumoEE.datos2)
+
+agrupacion.texts <- c("day", "week", "month", "bimonth", "quarter", "season", "halfyear", "year")
+agrupacion.textos <- c("diario", "semanal", "mensual", "bimensual", "trimestral", "estacional", "semestral", "anual")
+agrupacion.texto2text <- function(t) { return(agrupacion.texts[match(t, agrupacion.textos)]) }
+
+rango.min = ymd(min(consumoEE.datos2$Fecha))
+rango.max = ymd(max(consumoEE.datos2$Fecha))
 
 datos_cargados <- TRUE
 
