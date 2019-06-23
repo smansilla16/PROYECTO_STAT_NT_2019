@@ -7,7 +7,7 @@ grafico.descripcion <- paste("Gráfico de la demanda de energía eléctrica seg�
                              "y el", ajustes$rango[2],
                              ". Los datos se encuentran agrupados por fechas de forma",
                              ajustes$agrupacion, ". La demanda y la temperatura son promediadas",
-                             "en el período.")
+                             "en el rango comprendido por la agrupación.")
 
 grafico.observacion <- paste("Se observa que...")
 

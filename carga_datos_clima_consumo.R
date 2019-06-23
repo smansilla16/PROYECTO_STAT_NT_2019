@@ -76,8 +76,8 @@ ajustes <- list(rango = as.Date(c(rango.min, rango.max)),
                 agrupacion = "mensual")
 
 ajustes.update <- function(i) {
-  ajustes$rango <- i$rango
-  ajustes$agrupacion <- i$agrupacion
+  ajustes$rango <<- i$rango
+  ajustes$agrupacion <<- i$agrupacion
 }
 
 datos_clima_consumo_cargados <- TRUE
