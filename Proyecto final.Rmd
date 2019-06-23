@@ -3,9 +3,9 @@ title: 'Proyecto final - Consumo de Energía Eléctrica y Clima'
 csl: springer-lecture-notes-in-computer-science.csl
 link-citations: yes
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 nocite: '@*'
 linkcolor: blue
 bibliography: Referencias.bib
@@ -50,6 +50,7 @@ cat(grafico.observacion)
 #### Fin de Grafico 1 ####
 ```
 
+\pagebreak
 
 ```{r, echo=FALSE}
 #### Inicio de Grafico 2 ####
@@ -69,6 +70,7 @@ cat(grafico.observacion)
 #### Fin de Grafico 2 ####
 ```
 
+\pagebreak
 
 ```{r, echo=FALSE}
 #### Inicio de Grafico 3 ####
@@ -88,6 +90,7 @@ cat(grafico.observacion)
 #### Fin de Grafico 3 ####
 ```
 
+\pagebreak
 
 ```{r, echo=FALSE}
 #### Inicio de Grafico 4 ####
@@ -107,6 +110,7 @@ cat(grafico.observacion)
 #### Fin de Grafico 4 ####
 ```
 
+\pagebreak
 
 ```{r, echo=FALSE}
 #### Inicio de Grafico 5 ####
@@ -125,5 +129,7 @@ print(grafico)
 cat(grafico.observacion)
 #### Fin de Grafico 5 ####
 ```
+
+\pagebreak
 
 ## Referencias
