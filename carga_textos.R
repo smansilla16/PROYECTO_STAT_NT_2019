@@ -1,4 +1,4 @@
-if(!exists("textos_cargados"))
+if(!exists("textos_cargados") || !textos_cargados)
 {
   
   library(readr)

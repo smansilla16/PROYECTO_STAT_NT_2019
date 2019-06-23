@@ -11,8 +11,11 @@ linkcolor: blue
 bibliography: Referencias.bib
 ---
 
+
 ```{r setup, echo=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, results = "hide",
+                      warning=FALSE, message=FALSE, out.width = "80%",
+                      fig.align = "center", fig.pos='hbpt', out.extra = '')
 ```
 
 ## Introduccion
@@ -22,85 +25,86 @@ source("carga_textos.R")
 cat(intro_texto)
 ```
 
-
 ```{r, echo=FALSE}
-source("carga_datos.R", encoding = "UTF-8")
-nrow(consumoEE.datos2)
-nrow(consumoEE.datos3)
+datos_clima_consumo_cargados <<- FALSE
+source("carga_datos_clima_consumo.R", encoding = "UTF-8")
+source("carga_datos_GLP.R", encoding = "UTF-8")
 ```
 
-```{r, echo=FALSE}
-library(here)
-library(readxl)
-library(tidyverse)
-glp.2008 <- read_xls(here("GLP/Ventas+GLP+2008.xls"))
-glp.2009 <- read_xls(here("GLP/Ventas+GLP+2009.xls"))
-glp.2010 <- read_xls(here("GLP/Ventas+GLP+2010.xls"))
-glp.2011 <- read_xls(here("GLP/Ventas+GLP+2011.xls"))
-glp.2012 <- read_xls(here("GLP/Ventas+GLP+2012.xls"))
-glp.2013 <- read_xls(here("GLP/Ventas+GLP+2013.xls"))
-glp.2014 <- read_xls(here("GLP/Ventas+GLP+2014+para+publicar+en+la+web.xls"))
-glp.2014 <- rename(glp.2014,"...5"="...4","...6"="...5","...7"="...6","...8"="...7")
-glp.2015 <- read_xls(here("GLP/Ventas+GLP+2015+para+publicar+en+la+web.xls"))
-glp.2015 <- rename(glp.2015,"...5"="...4","...6"="...5","...7"="...6","...8"="...7")
-glp.2016 <- read_xls(here("GLP/Ventas+GLP+2016+para+publicar+en+la+web.xls"))
-glp.2017 <- read_xls(here("GLP/Ventas_GLP_2017.xls"))
-glp <- full_join(glp.2008,glp.2009)
-glp <- full_join(glp,glp.2010)
-glp <- full_join(glp,glp.2011)
-glp <- full_join(glp,glp.2012)
-glp <- full_join(glp,glp.2013)
-glp <- full_join(glp,glp.2014)
-glp <- full_join(glp,glp.2015)
-glp <- full_join(glp,glp.2016)
-glp <- full_join(glp,glp.2017)
 
-glp <- glp%>%
-  select("2008","2009","2010","2011","2012","2013","2014","2015","2016","2017","Cantidad GLP suministrada (kg)","...2","...5","...6","...7")%>%
-  cbind(1:212)%>%
-  gather(anio,"1:212","2008","2009","2010","2011","2012","2013","2014","2015","2016","2017")%>%
-  rename("distribuidor" = "1:212")%>%
-  filter(distribuidor=="Acodike" | distribuidor == "DUCSA" | distribuidor == "Megal" | distribuidor == "Riogas")%>%
-  rename("3k" = "Cantidad GLP suministrada (kg)","13k" = "...5","45k" = "...6","granel" = "...7","periodo" = "...2")%>%
-  gather(tamanio, glp.suministrada, "3k","13k","45k","granel")
-  rm(glp.2008,glp.2009,glp.2010,glp.2017,glp.2016,glp.2015,glp.2014,glp.2013,glp.2011,glp.2012)
+```{r, echo=FALSE}
+#### Inicio de Grafico 1 ####
+source("grafico_produccion_clima.R", encoding = "UTF-8")
+desc = grafico.descripcion
 ```
 
-Relación entre consumo y producción de energía eléctrica, para el período comprendido entre el 1/1/2004 y el 31/12/2018. Mensual y anual. En rojo el consumo, en azul, la producción. Ambos en GWh. ////ESTO LO PODEMOS AGREGAR A LA APP CON UNA VENTANA DESPLEGABLE QUE PERMITA CAMBIAR SI LOS DATOS ESTAN AGRUPADOS POR MES O POR AÑO
-
-```{r, echo=FALSE}
- consumoEE.datos2 %>% select(Fecha, Demanda, `Producción Total`) %>%
-           filter(Fecha<="2018-12-31") %>% 
-           gather(key="Clase", value="Energía", Demanda, `Producción Total`) %>%
-           group_by(month = floor_date(Fecha, "month"), Clase) %>%
-           summarize(`EnergíaTotal`=sum(`Energía`)) %>% 
-           ggplot(aes(x=month, y=`EnergíaTotal`, color = Clase)) + 
-           geom_point() + geom_smooth(method="lm", se = FALSE) +
-           labs(x = "Fecha", y = "Energía total (GWh)") + 
-           theme(aspect.ratio = 1)
-
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
 ```
 
-```{r, echo=FALSE}
- consumoEE.datos3 %>%
-   group_by(Estacion = floor_date(Fecha, "season"))%>%
-   summarise(Demanda = mean(Demanda))%>%
-   filter(Estacion < "2019-06-01", Estacion > "2003-12-01"	 )%>%
-   ggplot(aes(x = Estacion, y = Demanda))+
-   geom_line() +
-   theme(aspect.ratio = 1/3)+
-   stat_peaks(colour = "blue", geom = "text",vjust = -0.5, angle = -45)+
-   labs(x = "Fecha en trimestres", y = "Demanda de energia", title = "¿Como se comporta la demanda de energia al dividirla por estacion?")
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 1 ####
 ```
 
+
 ```{r, echo=FALSE}
- consumoEE.datos2 %>%
-  ggplot()+
-  geom_smooth(aes(x = temp_c, y = Demanda))+
-  geom_smooth(aes(x = MAX, y = Demanda))+
-  geom_smooth(aes(x = MIN, y = Demanda))+
-  labs(x = "Temperatura en celsius", y = "Demanda de energia")
-   
+#### Inicio de Grafico 2 ####
+source("grafico_demanda_clima.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 2 ####
+```
+
+
+```{r, echo=FALSE}
+#### Inicio de Grafico 3 ####
+source("grafico_demanda_estacion.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 3 ####
+```
+
+
+```{r, echo=FALSE}
+#### Inicio de Grafico 4 ####
+source("grafico_demanda_densidad_temp.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 4 ####
+```
+
+
+```{r, echo=FALSE}
+#### Inicio de Grafico 5 ####
+source("grafico_demanda_produccion.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 5 ####
 ```
 
 ## Referencias

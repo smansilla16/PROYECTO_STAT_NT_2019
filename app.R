@@ -5,7 +5,9 @@ library(shiny)
 library(shinydashboard)
 library(shinyWidgets)
 
-source("carga_datos.R", encoding = "UTF-8")
+datos_clima_consumo_cargados <<- FALSE
+
+source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
 source("carga_textos.R", encoding = "UTF-8")
 
@@ -32,8 +34,16 @@ barralateral <- dashboardSidebar(
                tabName = "grafico2",
                icon = icon("chart-area")),
       
-      menuItem("Gráfico Demanda - Producción",
+      menuItem("Gráfico Demanda - Estación",
                tabName = "grafico3",
+               icon = icon("chart-area")),
+
+      menuItem("Gráfico Demanda Dens. Temp.",
+               tabName = "grafico4",
+               icon = icon("chart-area")),
+      
+      menuItem("Gráfico Demanda - Producción",
+               tabName = "grafico5",
                icon = icon("chart-area")),
       
       menuItem("Control",
@@ -50,7 +60,7 @@ barralateral <- dashboardSidebar(
                  label = "Rango de fechas:",
                  min = rango.min,
                  max = rango.max,
-                 value = c(rango.min, rango.max),
+                 value = as.Date(c(rango.min, rango.max)),
                  timeFormat="%Y-%m-%d"
               ))
     )
@@ -70,36 +80,19 @@ cuerpo <- dashboardBody(
       )      
     ),
     conditionalPanel(
-      condition = "input.tabs == 'grafico1'",
+      condition = "input.tabs != 'intro' && input.tabs != 'control'",
       box(
-        title = "Grafico de Producción según el Clima",
-        plotOutput("grafica1.plot", height = 400),
+        title = textOutput("grafica.titulo"),
+        plotOutput("grafica.plot", height = 400),
+        textOutput("grafica.desc"),
+        textOutput("grafica.obs"),
         width = "100%",
         height="100%"
       )
-    ),    
-    conditionalPanel(
-      condition = "input.tabs == 'grafico2'",
-      box(
-        title = "Grafico de Demanda según la temperatura",
-        plotOutput("grafica2.plot", height = 400),
-        width = "100%",
-        height="100%"
-      )
-    ),
-    conditionalPanel(
-      condition = "input.tabs == 'grafico3'",
-      box(
-        title = "Grafico de Demanda y Producción energética",
-        plotOutput("grafica3.plot", height = 400),
-        width = "100%",
-        height="100%"
-      )
-  
+    )
   )
-))
+)
   
-
 
 ui <- dashboardPage(
   titulo,
@@ -108,65 +101,49 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-    output$grafica1.plot <- renderPlot({
+    output$grafica.plot <- renderPlot({
+
+      if(input$tabs != "intro" && input$tabs != "control")
+      {
+        ajustes.update(input)
+      }
 
       if(input$tabs == "grafico1")
       {
-        g1 <-consumoEE.datos3 %>% 
-          group_by(month = floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Fuente) %>%
-          filter(Producción!=0, Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>%
-          summarise(ProducciónPromedio=mean(Producción),
-                    TempMedia=mean(temp_c)) %>% 
-          ggplot(aes(x = TempMedia,
-                     y = ProducciónPromedio,
-                     color=Fuente)) +
-          geom_point() + geom_smooth(method="lm",se=FALSE) +
-          labs(x=paste("Temperatura media", input$agrupacion,"(ºC)"),
-               y=paste("Producción energética media", input$agrupacion ,"(GWh)"),
-               color="Fuente") +
-          theme(aspect.ratio = 1)
-        print(g1)
+        source("grafico_produccion_clima.R", encoding = "UTF-8")
       }
-    })
 
-    output$grafica2.plot <- renderPlot({
       if(input$tabs == "grafico2")
       {
-        g2 <- consumoEE.datos2 %>%
-          filter(Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
-          group_by(month = floor_date(Fecha,  agrupacion.texto2text(input$agrupacion))) %>% 
-          summarise(DemandaPromedio=mean(Demanda),TempMedia=mean(temp_c)) %>% 
-          ggplot(aes(x = TempMedia, y = DemandaPromedio)) +
-          geom_point() + geom_smooth(se=FALSE) +
-          labs(x=paste("Temperatura media", input$agrupacion,"(ºC)"),
-               y=paste("Demanda energética media", input$agrupacion ,"(GWh)"),
-               color="Fuente") +
-          theme(aspect.ratio = 1)
-        print(g2)
-        
+        source("grafico_demanda_clima.R", encoding = "UTF-8")
       }
-    })
-    
-    output$grafica3.plot <- renderPlot({
+
       if(input$tabs == "grafico3")
       {
-        cat(input$rango)
-        cat("  ") # hay algún problema con el rango de fechas !!!
-        
-        g3 <- consumoEE.datos3 %>% select(Fecha, Demanda, `Producción Total`) %>%
-          filter(Fecha >= input$rango[1] && Fecha <= input$rango[2]) %>% 
-          gather(key="Clase",value="Energía", Demanda, `Producción Total`) %>%
-          group_by(month=floor_date(Fecha, agrupacion.texto2text(input$agrupacion)), Clase) %>%
-          summarize(EnergíaTotal=sum(Energía)) %>% 
-          ggplot(aes(x=month,y=EnergíaTotal,color=Clase)) + 
-          geom_point() + geom_smooth(method="lm",se = FALSE) +
-          labs(x="Fecha",
-               y=paste("Energía total", input$agrupacion ,"(GWh)")) + 
-          theme(aspect.ratio = 1)
-        print(g3)
+        source("grafico_demanda_estacion.R", encoding = "UTF-8")
       }
-    })
 
-    }
+      if(input$tabs == "grafico4")
+      {
+        source("grafico_demanda_densidad_temp.R", encoding = "UTF-8")
+      }
+      
+      if(input$tabs == "grafico5")
+      {
+        source("grafico_demanda_produccion.R", encoding = "UTF-8")
+      }
+
+      if(input$tabs != "intro" && input$tabs != "control")
+      {
+        print(grafico)
+        output$grafica.titulo <-  renderText({ grafico.titulo })
+        output$grafica.desc <-  renderText({ grafico.descripcion })
+        output$grafica.obs <- renderText({ grafico.observacion })
+      }
+      
+    })
+    
+}
+    
 
 shinyApp(ui, server)

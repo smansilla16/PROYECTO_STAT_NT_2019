@@ -1,4 +1,4 @@
-if(!exists("datos_cargados"))
+if(!exists("datos_clima_consumo_cargados") || !datos_clima_consumo_cargados)
 {
   
 library(tidyverse)
@@ -72,6 +72,14 @@ agrupacion.texto2text <- function(t) { return(agrupacion.texts[match(t, agrupaci
 rango.min = ymd(min(consumoEE.datos2$Fecha))
 rango.max = ymd(max(consumoEE.datos2$Fecha))
 
-datos_cargados <- TRUE
+ajustes <- list(rango = as.Date(c(rango.min, rango.max)),
+                agrupacion = "mensual")
+
+ajustes.update <- function(i) {
+  ajustes$rango <- i$rango
+  ajustes$agrupacion <- i$agrupacion
+}
+
+datos_clima_consumo_cargados <- TRUE
 
 }
