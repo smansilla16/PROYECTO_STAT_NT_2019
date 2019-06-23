@@ -18,4 +18,5 @@ grafico <- consumoEE.datos2 %>%
 
   geom_smooth(aes(x = MIN, y = Demanda)) +
 
-  labs(x = "Temperatura en celsius", y = "Demanda de energia")
+  labs(x = "Temperatura en celsius",
+       y = "Demanda de energia")
