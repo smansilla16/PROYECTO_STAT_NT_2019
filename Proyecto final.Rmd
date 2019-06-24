@@ -21,7 +21,7 @@ knitr::opts_chunk$set(echo = FALSE, tidy = TRUE, results = "hide",
 ## Introduccion
 
 ```{r intro, echo=FALSE, results='asis'}
-source("carga_textos.R")
+source("carga_textos.R", encoding = "UTF-8")
 cat(intro_texto)
 ```
 

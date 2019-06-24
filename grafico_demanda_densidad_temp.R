@@ -1,4 +1,4 @@
-source("carga_datos_clima_consumo.R")
+source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
 grafico.titulo <- "Gráfico de densidad de Demanda - Temperatura"
 

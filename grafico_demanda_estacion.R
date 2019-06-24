@@ -1,4 +1,4 @@
-source("carga_datos_clima_consumo.R")
+source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
 grafico.titulo <- "Grafico de Demanda - Estación"
 
@@ -18,7 +18,7 @@ grafico.observacion <- paste("Se observa que...")
 
 grafico <- consumoEE.datos3 %>%
 
-  group_by(Estacion = floor_date(Fecha, "season")) %>%
+  group_by(Estacion = as.POSIXct(floor_date(Fecha, "season"))) %>%
 
   summarise(Demanda = mean(Demanda)) %>%
 
