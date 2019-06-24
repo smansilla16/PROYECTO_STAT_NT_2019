@@ -9,7 +9,12 @@ grafico.descripcion <- paste("Gráfico de la demanda de energía eléctrica seg�
                              ajustes$agrupacion, ". La demanda y la temperatura son promediadas",
                              "en el rango comprendido por la agrupación.")
 
-grafico.observacion <- paste("Se observa que...")
+grafico.observacion <- paste("Se puede apreciar una tendencia muy interesante: un comportamiento pseudo-parabólico,
+                              con concavidad positiva y un mínimo en el entorno de los 18-19 ºC. Esto indicaría,
+                             que el consumo de energía eléctrica aumenta a medida que la temperatura media es o 
+                             muy baja o muy alta y esto estaría relacionado con el uso de equipamiento para control 
+                             de temperatura. Cuando la temperatura es agradable, no existe la necesidad del uso de 
+                             estos equipos, por lo que el consumo eléctrico disminuye.")
 
 grafico <- consumoEE.datos2 %>%
 

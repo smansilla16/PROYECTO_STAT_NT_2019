@@ -4,9 +4,14 @@ grafico.titulo <- "Grafico de Producción según el Clima"
 
 grafico.descripcion <- paste("Grafico de puntos de producción promedio según la temperatura,",
                              "para el período comprendido entre el", ajustes$rango[1],
-                             "y el", ajustes$rango[2])
+                             "y el", ajustes$rango[2],".")
 
-grafico.observacion <- paste("Se observa que...")
+grafico.observacion <- paste("Se observa una caída en la producción eléctrica de fuente hidráulica a medida que la 
+                             temperatura aumenta. Las temperaturas promedio más altas, principalmente se ubican en 
+                             las estaciones cálidas y también pueden estar acompañadas por períodos de sequía, por 
+                             lo que resulta razonable la disminución de la producción proveniente de esta fuente. 
+                             Por otra parte, la producción de otras fuentes parecería mantenerse constante y ser 
+                             independiente de la temperatura atmosférica")
 
 grafico <- consumoEE.datos3 %>% 
 
