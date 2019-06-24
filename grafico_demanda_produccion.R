@@ -13,7 +13,12 @@ grafico.descripcion <- paste("Grafico de puntos de la demanda y la producción t
 
 escala = 100
 
-grafico.observacion <- paste("Se observa que...")
+grafico.observacion <- paste("En 2004, al inicio del intervalo para el cuál se tiene registro, la 
+                             producción total estaba por debajo de la demanda, mientras que en la 
+                             actualidad, esto se ha invertido. El punto de corte, o sea el momento
+                             en que Uruguay empezó a producir el 100% de lo que consume fue en 2012
+                             y de allí en adelante contamos con sobrante de producción, pudiendo
+                             éste quedar destinado para la exportación.")
 
 grafico <- consumoEE.datos3 %>% select(Fecha, Demanda, `Producción Total`) %>%
 
