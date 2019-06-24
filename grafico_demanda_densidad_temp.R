@@ -1,6 +1,6 @@
 source("carga_datos_clima_consumo.R")
 
-grafico.titulo <- "Grafico de densidad de Demanda - Tepmeratura"
+grafico.titulo <- "Gráfico de densidad de Demanda - Temperatura"
 
 grafico.descripcion <- paste("Grafico de densidad de la demanda según la temperatura,",
                              "para el período comprendido entre el", ajustes$rango[1],
@@ -12,11 +12,11 @@ grafico <- consumoEE.datos2 %>%
 
   ggplot() +
 
-  geom_smooth(aes(x = temp_c, y = Demanda)) +
+  geom_smooth(aes(x = temp_c, y = Demanda,color="black")) +
 
-  geom_smooth(aes(x = MAX, y = Demanda)) +
+  geom_smooth(aes(x = MAX, y = Demanda,color="red")) +
 
-  geom_smooth(aes(x = MIN, y = Demanda)) +
+  geom_smooth(aes(x = MIN, y = Demanda,color="blue")) +
 
-  labs(x = "Temperatura en celsius",
-       y = "Demanda de energia")
+  labs(x = "Temperatura (ºC)",
+       y = "Demanda de energia (GWh)")
