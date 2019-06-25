@@ -50,6 +50,10 @@ barralateral <- dashboardSidebar(
                tabName = "grafico6",
                icon = icon("chart-area")),
       
+      menuItem("Gráfico Temperatura - Tiempo",
+               tabName = "grafico7",
+               icon = icon("chart-area")),
+      
       menuItem("Control",
                tabName = "control",
                icon = icon("gamepad"),
@@ -140,6 +144,11 @@ server <- function(input, output) {
       if(input$tabs == "grafico6")
       {
         source("grafico_demanda_produccion.R", encoding = "UTF-8")
+      }
+      
+      if(input$tabs == "grafico7")
+      {
+        source("grafico_temperatura_tiempo.R", encoding = "UTF-8")
       }
 
       if(input$tabs != "intro" && input$tabs != "control")
