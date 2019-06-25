@@ -27,6 +27,8 @@ consumoEE <- read_xlsx(here("datos", "consumoenergiaelectrica.xlsx"))
 # simplificación de la tabla de clima según las variables que nos interesan
 # y conversión de temperatura de °F a °C
 clima.datos <- clima %>%
+  mutate(MIN = as.numeric(gsub("\\*","",MIN)),
+         MAX = as.numeric(gsub("\\*","",MAX))) %>%
   mutate(Fecha = ymd(YEARMODA),
          TEMP = (as.numeric(TEMP)-32)*5/9,
          MAX = (as.numeric(MAX)-32)*5/9,
@@ -50,7 +52,7 @@ consumoEE.datos2 <- consumoEE.datos %>%
   mutate(`Demanda` = `Demanda`/1000,
          `Importación` = `Importación`/1000,
          `Cons. de Generación` = `Cons. de Generación`/1000) %>%
-  na.omit()
+  drop_na(Fecha, temp_c, Demanda, `Producción Total`)
 
 colnames(consumoEE.datos2)
 
@@ -61,7 +63,7 @@ consumoEE.datos3 <- consumoEE.datos2 %>%
   gather(Fuente, `Producción`,
          `Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`) %>%
   mutate(`Producción` = `Producción`/1000) %>%
-  na.omit()
+  drop_na(Fecha, temp_c, MAX, MIN, Demanda, `Producción Total`)
 
 colnames(consumoEE.datos3)
 
