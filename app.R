@@ -38,12 +38,16 @@ barralateral <- dashboardSidebar(
                tabName = "grafico3",
                icon = icon("chart-area")),
 
-      menuItem("Gráfico Demanda Dens. Temp.",
+      menuItem("Gráfico Demanda - Mes",
                tabName = "grafico4",
+               icon = icon("chart-area")),
+
+      menuItem("Gráfico Demanda Dens. Temp.",
+               tabName = "grafico5",
                icon = icon("chart-area")),
       
       menuItem("Gráfico Demanda - Producción",
-               tabName = "grafico5",
+               tabName = "grafico6",
                icon = icon("chart-area")),
       
       menuItem("Control",
@@ -82,10 +86,10 @@ cuerpo <- dashboardBody(
     conditionalPanel(
       condition = "input.tabs != 'intro' && input.tabs != 'control'",
       box(
-        title = textOutput("grafica.titulo"),
+        title = htmlOutput("grafica.titulo"),
         plotOutput("grafica.plot", height = 400),
-        textOutput("grafica.desc"),
-        textOutput("grafica.obs"),
+        htmlOutput("grafica.desc"),
+        htmlOutput("grafica.obs"),
         width = "100%",
         height="100%"
       )
@@ -125,10 +129,15 @@ server <- function(input, output) {
 
       if(input$tabs == "grafico4")
       {
+        source("grafico_demanda_mes.R", encoding = "UTF-8")
+      }
+
+      if(input$tabs == "grafico5")
+      {
         source("grafico_demanda_densidad_temp.R", encoding = "UTF-8")
       }
       
-      if(input$tabs == "grafico5")
+      if(input$tabs == "grafico6")
       {
         source("grafico_demanda_produccion.R", encoding = "UTF-8")
       }
@@ -136,9 +145,9 @@ server <- function(input, output) {
       if(input$tabs != "intro" && input$tabs != "control")
       {
         print(grafico)
-        output$grafica.titulo <-  renderText({ grafico.titulo })
-        output$grafica.desc <-  renderText({ grafico.descripcion })
-        output$grafica.obs <- renderText({ grafico.observacion })
+        output$grafica.titulo <-  renderUI({ HTML(grafico.titulo) })
+        output$grafica.desc <-  renderUI({ HTML(paste("<p style='margin-top:30px'>", grafico.descripcion, "</p>")) })
+        output$grafica.obs <- renderUI({ p(HTML(grafico.observacion)) })
       }
       
     })

@@ -25,13 +25,14 @@ grafico <- consumoEE.datos3 %>%
   filter(Estacion >= ajustes$rango[1] & Estacion <= ajustes$rango[2]) %>%
 
   ggplot(aes(x = Estacion,
-             y = Demanda))+
+             y = Demanda)) +
 
   geom_line() +
 
-  theme(aspect.ratio = 1/3)+
+  theme(aspect.ratio = 1/3,
+        plot.title = element_text(hjust = 0.5)) +
 
-  stat_peaks(colour = "blue", geom = "text", vjust = -0.5, angle = -45)+
+  stat_peaks(colour = "blue", geom = "text", vjust = -0.5, angle = -45) +
 
   labs(x = "Fechas agrupadas según la estación (trimestres)",
        y = "Demanda de energia (CGWh)",

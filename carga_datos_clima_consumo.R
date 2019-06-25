@@ -49,7 +49,8 @@ consumoEE.datos2 <- consumoEE.datos %>%
   select(-`Exportación`, -`Exp. Otros Agentes`, -`Exp. Salto Grande`) %>%
   mutate(`Demanda` = `Demanda`/1000,
          `Importación` = `Importación`/1000,
-         `Cons. de Generación` = `Cons. de Generación`/1000)
+         `Cons. de Generación` = `Cons. de Generación`/1000) %>%
+  na.omit()
 
 colnames(consumoEE.datos2)
 
@@ -59,7 +60,8 @@ head(consumoEE.datos2)
 consumoEE.datos3 <- consumoEE.datos2 %>%
   gather(Fuente, `Producción`,
          `Hidráulica`, `Térmica`, `Eólica`, `Biomasa`, `Fotovoltaica`) %>%
-  mutate(`Producción` = `Producción`/1000)
+  mutate(`Producción` = `Producción`/1000) %>%
+  na.omit()
 
 colnames(consumoEE.datos3)
 

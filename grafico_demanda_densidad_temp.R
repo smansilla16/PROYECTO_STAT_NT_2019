@@ -9,14 +9,30 @@ grafico.descripcion <- paste("Grafico de densidad de la demanda según la temper
 grafico.observacion <- paste("Se observa que...")
 
 grafico <- consumoEE.datos2 %>%
+  
+  gather("Temperatura", "valor", temp_c, MAX, MIN) %>%
+  
+  ggplot(aes(x = valor, y = Demanda, colour = Temperatura)) +
 
-  ggplot() +
+  geom_smooth() +
+  
+  scale_color_manual(values = c(temp_c = "#00BA38",
+                                MAX = "#F8766D",
+                                MIN = "#619CFF"),
 
-  geom_smooth(aes(x = temp_c, y = Demanda,color="black")) +
-
-  geom_smooth(aes(x = MAX, y = Demanda,color="red")) +
-
-  geom_smooth(aes(x = MIN, y = Demanda,color="blue")) +
+                     labels = c(temp_c = "promedio",
+                                MAX = "maxima",
+                                MIN = "minima")) +
 
   labs(x = "Temperatura (ºC)",
        y = "Demanda de energia (GWh)")
+
+
+# los primeros 3 colores de ggplot predeterminados
+# serían los siguientes
+#
+# library(scales)
+#
+# hue_pal()(3)
+#
+
