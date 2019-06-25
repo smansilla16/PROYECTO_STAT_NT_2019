@@ -1,8 +1,8 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Grafico de Demanda - Estación"
+grafico.titulo <- "Gráfico de Demanda - Estación"
 
-grafico.descripcion <- paste("Grafico de línea de la demanda según la estación climática en cada año,",
+grafico.descripcion <- paste("Gráfico de líneas de la demanda según la estación climática en cada año,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2],
                              "La demanda en el gráfico se resume como la media",
@@ -35,5 +35,5 @@ grafico <- consumoEE.datos3 %>%
   stat_peaks(colour = "blue", geom = "text", vjust = -0.5, angle = -45) +
 
   labs(x = "Fechas agrupadas según la estación (trimestres)",
-       y = "Demanda de energia (CGWh)",
+       y = "Demanda de energia / 100 (GWh)",
        title = "¿Como se comporta la demanda de energia al dividirla por estacion?")

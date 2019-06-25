@@ -1,8 +1,8 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Grafico de Demanda y Producción energética"
+grafico.titulo <- "Gráfico de Demanda y Producción energética"
 
-grafico.descripcion <- paste("Grafico de puntos de la demanda y la producción totales",
+grafico.descripcion <- paste("Gráfico de puntos de la demanda y la producción totales",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2], ". Los datos se encuentran agrupados",
                              "por fechas de forma", ajustes$agrupacion, ". La demanda y producción",
@@ -35,6 +35,6 @@ grafico <- consumoEE.datos3 %>% select(Fecha, Demanda, `Producción Total`) %>%
   geom_point() + geom_smooth(method="lm",se = FALSE) +
 
   labs(x="Fecha",
-       y=paste("Energía total", ajustes$agrupacion ,"(CGWh)")) + 
+       y=paste("Energía total", ajustes$agrupacion ,"/ 100 (GWh)")) + 
   
   theme(aspect.ratio = 1)
