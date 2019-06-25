@@ -1,5 +1,5 @@
 
-<p>Nuestra pregunta principal sería: ¿El consumo de electricidad nacional depende de las condiciones meteorológicas? Para responderla, obtuvimos registros meteorológicos de consumo energético nacional y los asociamos por fecha.</p>
+<p>El objetivo principal de este trabajo sería: ¿Existe una relación entre el consumo/demanda de energía eléctrica nacional y las condiciones meteorológicas? Para acercarnos al estudio de este esta relación, obtuvimos registros meteorológicos y de consumo/producción energética nacional.</p>
 
 <p>Los datos meteorológicos diarios fueron obtenidos de la Estación Meteorológica Carrasco Intl. @ref.clima, de 1958 hasta la actualidad.</p>
 

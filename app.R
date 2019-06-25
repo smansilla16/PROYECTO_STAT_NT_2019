@@ -13,7 +13,7 @@ source("carga_textos.R", encoding = "UTF-8")
 
 
 titulo <- dashboardHeader(
-  title = "Consumo de Energía Electrica y Clima",
+  title = "Consumo de Energía Eléctrica y Clima",
   titleWidth = 400
 )
 
