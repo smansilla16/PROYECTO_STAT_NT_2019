@@ -1,6 +1,6 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Grafico de Demanda según la temperatura"
+grafico.titulo <- "Gráfico de Demanda según la temperatura"
 
 grafico.descripcion <- paste("Gráfico de la demanda de energía eléctrica según la temperatura,",
                              "para el período comprendido entre el", ajustes$rango[1],
@@ -29,7 +29,7 @@ grafico <- consumoEE.datos2 %>%
   geom_point() + geom_smooth(se=FALSE) +
 
   labs(x=paste("Temperatura media", ajustes$agrupacion,"(ºC)"),
-       y=paste("Demanda energética media", ajustes$agrupacion ,"(GWh)"),
+       y=paste("Demanda energética media", ajustes$agrupacion ,"/ 100 (GWh)"),
        color="Fuente") +
 
   theme(aspect.ratio = 1)

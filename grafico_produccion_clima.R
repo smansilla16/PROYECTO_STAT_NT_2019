@@ -1,8 +1,8 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Grafico de Producción según el Clima"
+grafico.titulo <- "Gráfico de Producción según el Clima"
 
-grafico.descripcion <- paste("Grafico de puntos de producción promedio según la temperatura,",
+grafico.descripcion <- paste("Gráfico de puntos de producción promedio según la temperatura,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2],".")
 
@@ -29,7 +29,7 @@ grafico <- consumoEE.datos3 %>%
   geom_point() + geom_smooth(method="lm",se=FALSE) +
 
   labs(x=paste("Temperatura media", ajustes$agrupacion,"(ºC)"),
-       y=paste("Producción energética media", ajustes$agrupacion ,"(GWh)"),
+       y=paste("Producción energética media", ajustes$agrupacion ,"/ 100 (GWh)"),
        color="Fuente") +
 
   theme(aspect.ratio = 1)

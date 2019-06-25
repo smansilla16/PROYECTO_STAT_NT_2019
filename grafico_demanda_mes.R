@@ -1,8 +1,8 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Grafico de Demanda - Meses"
+grafico.titulo <- "Gráfico de Demanda - Meses"
 
-grafico.descripcion <- paste("Grafico de línea de la demanda según el mes del año,",
+grafico.descripcion <- paste("Gráfico de línea de la demanda según el mes del año,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2],
                              ". La demanda en el gráfico se resume como la media",
@@ -10,7 +10,9 @@ grafico.descripcion <- paste("Grafico de línea de la demanda según el mes del 
                              "respecto de cada mes, y es expresada en GWh.")
 
 grafico.observacion <- paste("Notamos que en promedio existe mayor consumo diaro primero entre junio y agosto,",
-                             "y luego entre diciembre y febrero.")
+                             "y luego entre diciembre y febrero, lo cuál se corresponde con los meses más frios 
+                             y más cálidos. Esto puede corresponder a la necesidad en el control de temperatura
+                             de los hogares.")
 
 dmconsumo <- consumoEE.datos3 %>%
   
@@ -36,7 +38,7 @@ grafico <- dmconsumo %>%
         plot.title = element_text(hjust = 0.5)) +
   
   labs(x = "Meses del año",
-       y = "Demanda de energia promedio (GWh)",
+       y = "Demanda de energia promedio / 100 (GWh)",
        title = "¿Como se comporta la demanda de energia según los meses del año?")
 
 rm(dmconsumo, splconsumo)
