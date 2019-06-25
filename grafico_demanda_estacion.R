@@ -18,7 +18,7 @@ grafico.observacion <- paste("Se observa que...")
 
 grafico <- consumoEE.datos3 %>%
 
-  group_by(Estacion = as.POSIXct(floor_date(Fecha, "season"))) %>%
+  group_by(Estacion = as.POSIXct(floor_date(Fecha, "season") + months(1) + days(15))) %>%
 
   summarise(Demanda = mean(Demanda)) %>%
 
