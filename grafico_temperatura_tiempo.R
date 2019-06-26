@@ -16,8 +16,8 @@ grafico.observacion <- paste("Podemos observar la relación clara entre el mes d
                              si uno además tiene la temperatura media global. Ver: https://www.bbc.com/mundo/noticias-46426822")
 
 grafico <-   
-  consumoEE.datos3 %>% select(Fecha, temp_c) %>%
-  filter(Fecha >= ajustes$rango[1] & Fecha <= ajustes$rango[2]) %>%
+  clima.datos %>% select(Fecha, temp_c) %>%
+  filter(Fecha <= ajustes$rango[2]) %>%
   group_by(month=floor_date(Fecha, "month"))  %>% 
   summarize(TempMedia=mean(temp_c)) %>%
   ggplot(aes(x=month(month),y=TempMedia,color=factor(year(month)))) +           

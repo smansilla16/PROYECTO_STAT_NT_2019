@@ -13,7 +13,8 @@ grafico.observacion <- paste("Se observa una caída en la producción eléctrica
                              Por otra parte, la producción de otras fuentes parecería mantenerse constante y ser 
                              independiente de la temperatura atmosférica")
 
-grafico <- consumoEE.datos3 %>% 
+grafico <- 
+  consumoEE.datos3 %>% 
 
   group_by(month = floor_date(Fecha, agrupacion.texto2text(ajustes$agrupacion)), Fuente) %>%
 
@@ -32,4 +33,4 @@ grafico <- consumoEE.datos3 %>%
        y=paste("Producción energética media", ajustes$agrupacion ,"/ 100 (GWh)"),
        color="Fuente") +
 
-  theme(aspect.ratio = 1)
+   theme_grey() + theme(aspect.ratio = 1)

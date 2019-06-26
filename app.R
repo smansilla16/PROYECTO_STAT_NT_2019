@@ -30,7 +30,7 @@ barralateral <- dashboardSidebar(
                tabName = "grafico1",
                icon = icon("chart-area")),
       
-      menuItem("Gráfico Demanda - Clima",
+      menuItem("Gráfico Demanda - Temp",
                tabName = "grafico2",
                icon = icon("chart-area")),
       
@@ -42,10 +42,6 @@ barralateral <- dashboardSidebar(
                tabName = "grafico4",
                icon = icon("chart-area")),
 
-      menuItem("Gráfico Demanda Dens. Temp.",
-               tabName = "grafico5",
-               icon = icon("chart-area")),
-      
       menuItem("Gráfico Demanda - Producción",
                tabName = "grafico6",
                icon = icon("chart-area")),
@@ -140,11 +136,6 @@ server <- function(input, output) {
         source("grafico_demanda_mes.R", encoding = "UTF-8")
       }
 
-      if(input$tabs == "grafico5")
-      {
-        source("grafico_demanda_densidad_temp.R", encoding = "UTF-8")
-      }
-      
       if(input$tabs == "grafico6")
       {
         source("grafico_demanda_produccion.R", encoding = "UTF-8")
