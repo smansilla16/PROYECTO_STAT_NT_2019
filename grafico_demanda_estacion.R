@@ -31,8 +31,9 @@ grafico <- consumoEE.datos3 %>%
 
   theme(aspect.ratio = 1/3,
         plot.title = element_text(hjust = 0.5)) +
-
-  stat_peaks(colour = "blue", geom = "text", vjust = -0.5, angle = -45) +
+  stat_peaks(colour = "blue", geom = "point")+
+  stat_peaks(colour = "blue", geom = "text", vjust = -0.3, x.label.fmt = "%m") +
+  stat_peaks(geom = "rug",colour = "blue")+
 
   labs(x = "Fechas agrupadas según la estación (trimestres)",
        y = "Demanda de energia / 100 (GWh)",
