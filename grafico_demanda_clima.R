@@ -59,7 +59,6 @@ grafico2 <- consumoEE.datos2 %>%
        y = "Demanda de energia (GWh)",title="B") +
   theme(aspect.ratio = 1)
 
-#grafico <- grid.arrange(grafico1,grafico2,nrow=1,widths=c(9,10))
-grafico <- plot_grid(grafico1+ theme_grey(),grafico2+ theme_grey(),rel_widths=c(1.5,2))
+grafico <- plot_grid(grafico1, grafico2, rel_widths=c(1,1.4))
 
 

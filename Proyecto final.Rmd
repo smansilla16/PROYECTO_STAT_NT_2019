@@ -3,9 +3,9 @@ title: 'Proyecto final - Consumo de Energía Eléctrica y Clima'
 csl: springer-lecture-notes-in-computer-science.csl
 link-citations: yes
 output:
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
 nocite: '@*'
 linkcolor: blue
 bibliography: Referencias.bib
@@ -28,7 +28,7 @@ cat(intro_texto)
 ```{r, echo=FALSE}
 datos_clima_consumo_cargados <<- FALSE
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
-source("carga_datos_GLP.R", encoding = "UTF-8")
+#source("carga_datos_GLP.R", encoding = "UTF-8")
 ```
 
 

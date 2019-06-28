@@ -8,9 +8,15 @@ library(ggpmisc)
 library(readxl)
 library(forcats)
 library(lubridate)
-library(cowplot)
 
 library(here)
+
+library(cowplot) # para acomodar múltiples plots en un mismo bloque
+
+theme_set(
+  theme_grey() # para devolver el estilo estándar de ggplot
+               # porque que es cambiado por cowplot
+)
 
 # clima por fecha
 clima <- read_xlsx(here("datos", "clima.xlsx"))
