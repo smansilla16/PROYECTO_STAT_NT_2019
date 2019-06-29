@@ -1,5 +1,7 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
+grafico.post <- ""
+
 grafico.titulo <- "Gráfico de Demanda - Meses"
 
 grafico.descripcion <- paste("Gráfico de línea de la demanda según el mes del año,",
@@ -38,7 +40,7 @@ grafico <- dmconsumo %>%
         plot.title = element_text(hjust = 0.5)) +
   
   labs(x = "Meses del año",
-       y = "Demanda de energia promedio / 100 (GWh)",
+       y = "Demanda de energia promedio (GWh)",
        title = "¿Como se comporta la demanda de energia según los meses del año?")
 
 rm(dmconsumo, splconsumo)

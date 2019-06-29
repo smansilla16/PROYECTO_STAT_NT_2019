@@ -82,8 +82,10 @@ agrupacion.texts <- c("day", "week", "month", "bimonth", "quarter", "season", "h
 agrupacion.textos <- c("diario", "semanal", "mensual", "bimensual", "trimestral", "estacional", "semestral", "anual")
 agrupacion.texto2text <- function(t) { return(agrupacion.texts[match(t, agrupacion.textos)]) }
 
-rango.min = ymd(min(consumoEE.datos2$Fecha))
-rango.max = ymd(max(consumoEE.datos2$Fecha))
+rango.min <- ymd(min(consumoEE.datos2$Fecha))
+rango.max <- ymd(max(consumoEE.datos2$Fecha))
+rango.color.año <- hue_pal()(year(rango.max)-year(rango.min) + 1)
+names(rango.color.año) <- year(rango.min):year(rango.max)
 
 ajustes <- list(rango = as.Date(c(rango.min, rango.max)),
                 agrupacion = "mensual")

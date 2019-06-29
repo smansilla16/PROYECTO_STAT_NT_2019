@@ -34,7 +34,7 @@ grafico <-
 
   geom_line() + 
   
-  # scale_color_manual(values = hue_pal()(nrow(Año))) +
+  scale_color_manual(values = rango.color.año) +
 
   scale_y_continuous(limits = c(0,30)) +
 

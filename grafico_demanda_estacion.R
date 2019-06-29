@@ -1,5 +1,7 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
+grafico.pre <- ""
+
 grafico.titulo <- "Gráfico de Demanda - Estación"
 
 grafico.descripcion <- paste("Gráfico de líneas de la demanda según la estación climática en cada año,",

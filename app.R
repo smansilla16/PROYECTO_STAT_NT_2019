@@ -38,10 +38,6 @@ barralateral <- dashboardSidebar(
                tabName = "grafico3",
                icon = icon("chart-area")),
 
-      menuItem("Gráfico Demanda - Mes",
-               tabName = "grafico4",
-               icon = icon("chart-area")),
-
       menuItem("Gráfico Demanda - Producción",
                tabName = "grafico6",
                icon = icon("chart-area")),
@@ -65,7 +61,7 @@ barralateral <- dashboardSidebar(
                ),
                radioButtons(
                  inputId = "tipofiltro",
-                 label = "Filtro por:",
+                 label = "Filtrados por:",
                  choices = c("Rango", "Año"),
                  inline = TRUE
                ),
@@ -109,7 +105,7 @@ cuerpo <- dashboardBody(
       )      
     ),
     conditionalPanel(
-      condition = "input.tabs != 'intro' && input.tabs != 'control'",
+      condition = "RegExp('grafico[1-8]').test(input.tabs)",
       box(
         title = htmlOutput("grafica.titulo"),
         plotOutput("grafica.plot", height = 400),
@@ -130,12 +126,15 @@ ui <- dashboardPage(
 )
 
 server <- function(input, output) {
-    output$grafica.plot <- renderPlot({
-
-      if(input$tabs != "intro" && input$tabs != "control")
+  
+    reactive({
+      if(input$tabs == "control")
       {
         ajustes.update(input)
       }
+    })
+    
+    output$grafica.plot <- renderPlot({
 
       if(input$tabs == "grafico1")
       {
@@ -144,17 +143,12 @@ server <- function(input, output) {
 
       if(input$tabs == "grafico2")
       {
-        source("grafico_demanda_clima.R", encoding = "UTF-8")
+        source("grafico_demanda_clima_temp.R", encoding = "UTF-8")
       }
 
       if(input$tabs == "grafico3")
       {
-        source("grafico_demanda_estacion.R", encoding = "UTF-8")
-      }
-
-      if(input$tabs == "grafico4")
-      {
-        source("grafico_demanda_mes.R", encoding = "UTF-8")
+        source("grafico_demanda_estacion_mes.R", encoding = "UTF-8")
       }
 
       if(input$tabs == "grafico6")
@@ -172,7 +166,7 @@ server <- function(input, output) {
         source("grafico_temperatura_tiempo2.R", encoding = "UTF-8")
       }
 
-      if(input$tabs != "intro" && input$tabs != "control")
+      if(grepl("grafico[1-8]", input$tabs))
       {
         print(grafico)
         output$grafica.titulo <-  renderUI({ HTML(grafico.titulo) })
@@ -182,6 +176,7 @@ server <- function(input, output) {
       
     })
     
+
 }
     
 
