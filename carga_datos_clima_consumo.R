@@ -13,6 +13,8 @@ library(here)
 
 library(cowplot) # para acomodar múltiples plots en un mismo bloque
 
+library(scales)
+
 theme_set(
   theme_grey() # para devolver el estilo estándar de ggplot
                # porque que es cambiado por cowplot
@@ -87,7 +89,14 @@ ajustes <- list(rango = as.Date(c(rango.min, rango.max)),
                 agrupacion = "mensual")
 
 ajustes.update <- function(i) {
-  ajustes$rango <<- i$rango
+  if(i$tipofiltro == "Rango")
+  {
+    ajustes$rango <<- i$rango
+  }
+  else
+  {
+    ajustes$rango <<- c(ymd(i$año*10000 + 101), ymd(i$año*10000 + 1231))
+  }    
   ajustes$agrupacion <<- i$agrupacion
 }
 

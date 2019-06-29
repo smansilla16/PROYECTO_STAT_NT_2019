@@ -63,14 +63,35 @@ barralateral <- dashboardSidebar(
                  choices = agrupacion.textos,
                  selected = agrupacion.textos[3]
                ),
-               sliderInput(
-                 inputId = "rango",
-                 label = "Rango de fechas:",
-                 min = rango.min,
-                 max = rango.max,
-                 value = as.Date(c(rango.min, rango.max)),
-                 timeFormat="%Y-%m-%d"
-              ))
+               radioButtons(
+                 inputId = "tipofiltro",
+                 label = "Filtro por:",
+                 choices = c("Rango", "Año"),
+                 inline = TRUE
+               ),
+               conditionalPanel(
+                 condition = "input.tipofiltro == 'Rango'",
+                 sliderInput(
+                   inputId = "rango",
+                   label = "Rango de fechas:",
+                   min = rango.min,
+                   max = rango.max,
+                   value = as.Date(c(rango.min, rango.max)),
+                   timeFormat="%Y-%m-%d"
+                )
+              ),
+              conditionalPanel(
+                condition = "input.tipofiltro == 'Año'",
+                sliderInput(
+                  inputId = "año",
+                  label = "Selección de Año:",
+                  min = year(rango.min),
+                  max = year(rango.max),
+                  value = year(rango.max),
+                  sep = ""
+                )
+              )
+             )
     )
   )
 )

@@ -21,7 +21,8 @@ instala.librerias(
   "shiny",
   "shinydashboard",
   "shinyWidgets",
-  "cowplot"
+  "cowplot",
+  "shinycssloaders"
 )
 
 

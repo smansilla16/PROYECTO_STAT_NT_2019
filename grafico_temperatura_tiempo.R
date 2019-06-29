@@ -17,14 +17,32 @@ grafico.observacion <- paste("Podemos observar la relación clara entre el mes d
 
 grafico <-   
   clima.datos %>% select(Fecha, temp_c) %>%
-  filter(Fecha <= ajustes$rango[2]) %>%
-  group_by(month=floor_date(Fecha, "month"))  %>% 
+
+  filter(Fecha <= ajustes$rango[2] & Fecha >= ajustes$rango[1]) %>%
+
+  group_by(MesAño=floor_date(Fecha, "month"))  %>% 
+
   summarize(TempMedia=mean(temp_c)) %>%
-  ggplot(aes(x=month(month),y=TempMedia,color=factor(year(month)))) +           
+
+  group_by(Mes=factor(month(MesAño, label = TRUE, abbr= FALSE)),
+           Año=factor(year(MesAño))) %>%
+
+  ggplot(aes(x=Mes,
+             y=TempMedia,
+             color=Año,
+             group=Año)) +
+
   geom_line() + 
-  scale_x_continuous(breaks= 1:12) +
+  
+  # scale_color_manual(values = hue_pal()(nrow(Año))) +
+
   scale_y_continuous(limits = c(0,30)) +
+
   geom_hline(yintercept=mean(consumoEE.datos3$temp_c), linetype="dashed", color = "black") +
   geom_hline(yintercept=min(consumoEE.datos3$temp_c), linetype="dashed", color = "blue") +
   geom_hline(yintercept=max(consumoEE.datos3$temp_c), linetype="dashed", color = "red") +
-  labs(x="Mes",y=paste("Temperatura media mensual (ºC)"),color="Año")
+
+  labs(x="Mes",y=paste("Temperatura media mensual (ºC)"),color="Año") +
+  
+  theme(axis.text.x = element_text(angle = 45, hjust=1))
+  
