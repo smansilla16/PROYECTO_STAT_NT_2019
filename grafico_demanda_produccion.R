@@ -3,7 +3,7 @@ source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 grafico.titulo <- "¿Cómo se compara la demanda con la producción, y la importación/exportación? 
 ¿Uruguay ha mejorado su capacidad de autosuficiencia energética?"
 
-grafico.descripcion <- paste("Gráfico de puntos de la demanda y la producción totales",
+grafico.descripcion <- paste("Gráfico de puntos de la demanda/producción e importación/exportación",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2], ". Los datos se encuentran agrupados",
                              "por fechas de forma", ajustes$agrupacion, ". La demanda y producción",

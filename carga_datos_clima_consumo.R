@@ -85,7 +85,7 @@ agrupacion.texto2text <- function(t) { return(agrupacion.texts[match(t, agrupaci
 
 rango.min <- ymd(min(consumoEE.datos2$Fecha))
 rango.max <- ymd(max(consumoEE.datos2$Fecha))
-rango.color.año <- hue_pal()(year(rango.max)-year(rango.min) + 1)
+rango.color.año <- seq_gradient_pal(low="red", high="green")(seq(0,1,length.out = year(rango.max)-year(rango.min)+1))
 names(rango.color.año) <- year(rango.min):year(rango.max)
 
 ajustes <- list(rango = as.Date(c(rango.min, rango.max)),

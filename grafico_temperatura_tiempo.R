@@ -2,10 +2,12 @@ source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
 grafico.titulo <- "¿Hay alguna tendencia de la temperatura con el paso de los años?"
 
-grafico.descripcion <- paste("Grafico de barras para la temperatura respecto al tiempo",
+grafico.descripcion <- paste("Grafico líneas de la temperatura media mensual en cada año,",
                              "para el período comprendido entre el", ajustes$rango[1],
-                             "y el", ajustes$rango[2], ". Se muestran, respecto a la temperatura
-                             media histórica diaria, la máxima (rojo), media (negro) y mínima (azul) temperatura.")
+                             "y el", ajustes$rango[2], ". Los años quedan representados por colores",
+                             "del rojo al verde (", rango.min, " - ",rango.max, "). Se muestran entre las
+                              líneas horizontales de máxima (rojo), media (negro) y mínima (azul)
+                              temperatura media histórica diaria.")
 
 grafico.observacion <- paste("Podemos observar la relación clara entre el mes del año y la temperatura
                              media mensual. Por otra parte, es posible distinguir diferencias muy leves acerca
@@ -34,15 +36,24 @@ grafico <-
   geom_line(size=1) + 
   
   #scale_color_manual(values = rango.color.año) +
-  #scale_color_brewer(palette = "Reds")+
-  #scale_color_manual(values = scales::brewer_pal(palette="Reds")(year(rango.max)-year(rango.min) + 1))+
-  scale_color_gradient(low="red", high="green",breaks=as.numeric(names(rango.color.año)),labels=names(rango.color.año),limits=c(year(rango.min),year(rango.max))) +
+
+  scale_color_gradient(low="red", high="green",
+                       breaks= year(rango.min):year(rango.max),
+                       limits = c(year(rango.min), year(rango.max))) +
   scale_y_continuous(limits = c(0,30)) +
 
   geom_hline(yintercept=mean(consumoEE.datos3$temp_c), linetype="dashed", color = "black") +
   geom_hline(yintercept=min(consumoEE.datos3$temp_c), linetype="dashed", color = "blue") +
   geom_hline(yintercept=max(consumoEE.datos3$temp_c), linetype="dashed", color = "red") +
 
-  labs(x="Mes",y=paste("Temperatura media mensual (ºC)"),color="Año") +
+  labs(x="Mes",
+       y=paste("Temperatura media mensual (ºC)"),
+       color="Año",
+       title = ifelse(year(ajustes$rango[1]) < year(ajustes$rango[2]),
+                      paste(year(ajustes$rango[1]), "-", year(ajustes$rango[2])),
+                      year(ajustes$rango[1]))) +
   
-  theme(axis.text.x = element_text(angle = 45, hjust=1), legend.key.size = unit(1.5, "cm"))
+  theme(axis.text.x = element_text(angle = 45, hjust=1),
+        legend.key.width = unit(1, "lines"),
+        legend.key.height = unit(2.5, "lines"),
+        plot.title = element_text(hjust = 0.5))
