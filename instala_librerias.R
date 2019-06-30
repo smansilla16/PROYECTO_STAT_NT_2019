@@ -23,6 +23,7 @@ instala.librerias(
   "shinyWidgets",
   "cowplot",
   "shinycssloaders"
+  "plotly"
 )
 
 

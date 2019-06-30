@@ -14,6 +14,7 @@ library(here)
 library(cowplot) # para acomodar múltiples plots en un mismo bloque
 
 library(scales)
+library(plotly)
 
 theme_set(
   theme_grey() # para devolver el estilo estándar de ggplot
