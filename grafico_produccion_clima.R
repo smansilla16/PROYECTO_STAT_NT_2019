@@ -33,5 +33,5 @@ grafico <-
   theme(axis.text.x = element_text(angle = 90))+
   
   labs(x=paste("Temperatura media", ajustes$agrupacion,"(ºC)"),
-       y=paste("Producción energética media", ajustes$agrupacion ,"/ 100 (GWh)"),
+       y=paste("Producción energética media", ajustes$agrupacion ,"(GWh)"),
        color="Fuente") 
