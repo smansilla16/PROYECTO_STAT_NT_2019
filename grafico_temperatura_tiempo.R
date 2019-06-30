@@ -1,8 +1,8 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "¿Hay alguna tendencia de la temperatura con el paso de los años?"
+grafico.titulo <- "¿Hay alguna tendencia en la temperatura con el paso de los años?"
 
-grafico.descripcion <- paste("Grafico líneas de la temperatura media mensual en cada año,",
+grafico.descripcion <- paste("Grafico de líneas de la temperatura media mensual en cada año,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2], ". Los años quedan representados por colores",
                              "del rojo al verde (", rango.min, " - ",rango.max, "). Se muestran entre las
