@@ -12,10 +12,10 @@ grafico2.titulo <- grafico.titulo
 grafico2.descripcion <- grafico.descripcion
 grafico2.observacion <- grafico.observacion
 
-grafico.titulo <- "Grafico de Demanda según estaciones y meses"
+grafico.titulo <- "¿Cómo varía la demanda por estación y por mes?"
 
-grafico.descripcion <- paste("<p>A.", grafico1.descripcion, "</p>",
-                             "<p>B.", grafico2.descripcion, "</p>")
+grafico.descripcion <- paste("A.", grafico1.descripcion, "",
+                             "B.", grafico2.descripcion, "")
 
 grafico.observacion <- paste("<p>A.", grafico1.observacion, "</p>",
                              "<p>B.", grafico2.observacion, "</p>",
@@ -23,4 +23,4 @@ grafico.observacion <- paste("<p>A.", grafico1.observacion, "</p>",
                              "<p>...</p>")
 
 
-grafico <- plot_grid(grafico1, grafico2, nrow=1, rel_heights = c(1,1))
+grafico <- plot_grid(grafico1, grafico2, nrow=1, rel_widths = c(1,0.5))

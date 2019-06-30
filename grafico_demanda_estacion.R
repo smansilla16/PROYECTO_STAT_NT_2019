@@ -11,7 +11,9 @@ grafico.descripcion <- paste("Gráfico de líneas de la demanda según la estaci
                              "de la energía eléctrica diaria que se destina al país",
                              "para cada estación del año, y es expresada en GWh.")
 
-grafico.observacion <- paste("Se observa que...")
+grafico.observacion <- paste("Podemos observar que la demanda promedio parece crecer con el paso de los años. Además
+                             vemos un comportamiento cíclico dónde los picos de consumo, en todos los años cae en el 
+                             trimestre que comprende julio (junio-agosto), correspondiente al invierno.")
 
 # la demanda en el gráfico se resume como la media diaria, aunque antes
 # estaba como el total de la estación, si fuera el total de la estación
@@ -37,7 +39,7 @@ grafico <- consumoEE.datos3 %>%
                    labels = scales::date_format("%Y")) +
   
   stat_peaks(colour = "blue", geom = "point") +
-  stat_peaks(colour = "blue", geom = "text", vjust = -0.3, x.label.fmt = "%m") +
+  stat_peaks(colour = "blue", geom = "text", vjust = -0.3, x.label.fmt = "%b") +
   stat_peaks(geom = "rug",colour = "blue") +
   
   theme(aspect.ratio = 1/3,

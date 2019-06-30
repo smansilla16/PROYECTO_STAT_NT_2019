@@ -1,17 +1,15 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Gráfico de Producción según el Clima"
+grafico.titulo <- "¿Cómo se comporta la producción respecto al mes del año y por fuente?"
 
-grafico.descripcion <- paste("Gráfico de puntos de producción promedio según la temperatura,",
+grafico.descripcion <- paste("Gráfico de barras de producción energética promedio según el mes, separado por fuente,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2],".")
 
-grafico.observacion <- paste("Se observa una caída en la producción eléctrica de fuente hidráulica a medida que la 
-                             temperatura aumenta. Las temperaturas promedio más altas, principalmente se ubican en 
-                             las estaciones cálidas y también pueden estar acompañadas por períodos de sequía, por 
-                             lo que resulta razonable la disminución de la producción proveniente de esta fuente. 
-                             Por otra parte, la producción de otras fuentes parecería mantenerse constante y ser 
-                             independiente de la temperatura atmosférica")
+grafico.observacion <- paste("Se observa un comportamiento cíclico en la producción energética de fuente hidráulica con máximo en primavera y mínimo en verano, 
+posiblemente asociado con la frecuencia de lluvia en ambas estaciones, mientras que la térmica resulta coplementaria. La energía de fuente fotovoltaica, tiene un 
+mínimo en julio. En esa época, los días son más cortos y la intensidad lumínica promedio es menor. Por su parte la
+producción por las demás fuentes parece permanecer constante, e independiente del mes del año.")
 
 grafico <- 
   consumoEE.datos3 %>% 
@@ -28,9 +26,9 @@ grafico <-
   ggplot(aes(x = Mes,
              y = Producción,
              fill = Fuente)) +
-  geom_bar(stat = "identity")+
-  facet_grid(~Fuente)+
-  theme(axis.text.x = element_text(angle = 90))+
+  geom_bar(stat = "identity",show.legend = FALSE)+theme_gray()+
+  facet_wrap(~Fuente,scales = "free")+
+  theme(axis.text.x = element_text(angle = 90,hjust=0.95,vjust=0.2))+
   
   labs(x=paste("Temperatura media", ajustes$agrupacion,"(ºC)"),
        y=paste("Producción energética media", ajustes$agrupacion ,"(GWh)"),

@@ -1,6 +1,6 @@
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
-grafico.titulo <- "Gráfico de Temperatura vs. Tiempo"
+grafico.titulo <- "¿Hay alguna tendencia de la temperatura con el paso de los años?"
 
 grafico.descripcion <- paste("Grafico de caja para la temperatura respecto al tiempo",
                              "para el período comprendido entre el", ajustes$rango[1],
@@ -21,6 +21,4 @@ grafico <-
   geom_hline(yintercept=min(consumoEE.datos3$temp_c), linetype="dashed", color = "blue") +
   geom_hline(yintercept=max(consumoEE.datos3$temp_c), linetype="dashed", color = "red") +
   labs(x="Año",y="Temperatura media anual (ºC)") + 
-  theme(axis.text.x = element_text(angle = 90,vjust = 0.5))
-
-
+  theme(axis.text.x = element_text(angle = 45,vjust = 0.5))

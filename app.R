@@ -128,14 +128,16 @@ ui <- dashboardPage(
 server <- function(input, output) {
   
     reactive({
-      if(input$tabs == "control")
-      {
-        ajustes.update(input)
-      }
+
     })
     
     output$grafica.plot <- renderPlot({
 
+      if(grepl("grafico[1-8]", input$tabs))
+      {
+        ajustes.update(input)
+      }
+      
       if(input$tabs == "grafico1")
       {
         source("grafico_produccion_clima.R", encoding = "UTF-8")
@@ -173,6 +175,7 @@ server <- function(input, output) {
         output$grafica.desc <-  renderUI({ HTML(paste("<p style='margin-top:30px'>", grafico.descripcion, "</p>")) })
         output$grafica.obs <- renderUI({ p(HTML(grafico.observacion)) })
       }
+
       
     })
     

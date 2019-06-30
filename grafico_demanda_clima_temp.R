@@ -12,10 +12,10 @@ grafico2.titulo <- grafico.titulo
 grafico2.descripcion <- grafico.descripcion
 grafico2.observacion <- grafico.observacion
 
-grafico.titulo <- "Grafico de Demanda según clima"
+grafico.titulo <- "¿Existe una relación entre la demanda y la temperatura media?"
 
-grafico.descripcion <- paste("<p>A.", grafico1.descripcion, "</p>",
-                             "<p>B.", grafico2.descripcion, "</p>")
+grafico.descripcion <- paste("A.", grafico1.descripcion, "",
+                             "B.", grafico2.descripcion, "")
 
 grafico.observacion <- paste("<p>A.", grafico1.observacion, "</p>",
                              "<p>B.", grafico2.observacion, "</p>",

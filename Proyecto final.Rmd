@@ -3,9 +3,9 @@ title: 'Proyecto final - Consumo de Energía Eléctrica y Clima'
 csl: springer-lecture-notes-in-computer-science.csl
 link-citations: yes
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 nocite: '@*'
 linkcolor: blue
 bibliography: Referencias.bib
@@ -108,6 +108,47 @@ print(grafico)
 ```{r, echo=FALSE, results='asis'}
 cat(grafico.observacion)
 #### Fin de Grafico 6 ####
+```
+
+
+\pagebreak
+
+```{r, echo=FALSE}
+#### Inicio de Grafico 7 ####
+source("grafico_temperatura_tiempo.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, results='asis'}
+cat("##", grafico.titulo)
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 7 ####
+```
+
+\pagebreak
+
+```{r, echo=FALSE}
+#### Inicio de Grafico 8 ####
+source("grafico_temperatura_tiempo2.R", encoding = "UTF-8")
+```
+
+```{r, echo=FALSE, results='asis'}
+cat("##", grafico.titulo)
+```
+
+```{r, echo=FALSE, fig.cap = grafico.descripcion}
+print(grafico)
+```
+
+```{r, echo=FALSE, results='asis'}
+cat(grafico.observacion)
+#### Fin de Grafico 8 ####
 ```
 
 \pagebreak
