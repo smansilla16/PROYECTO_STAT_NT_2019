@@ -7,6 +7,8 @@ library(shinyWidgets)
 
 datos_clima_consumo_cargados <<- FALSE
 
+textos_cargados <<- FALSE
+
 source("carga_datos_clima_consumo.R", encoding = "UTF-8")
 
 source("carga_textos.R", encoding = "UTF-8")
@@ -100,7 +102,7 @@ cuerpo <- dashboardBody(
         title = h2("Introducción"),
         icon = icon("info-circle"),
         width = 12,
-        value = HTML(intro_texto),
+        value = HTML(refs.traduce(intro_texto)),
         img(src = "diagrama.png", width = "100%")
       )      
     ),
