@@ -7,7 +7,7 @@ grafico.titulo <- "Gráfico de Demanda - Estación"
 grafico.descripcion <- paste("Gráfico de líneas de la demanda según la estación climática en cada año,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2],
-                             "La demanda en el gráfico se resume como la media",
+                             ". La demanda en el gráfico se resume como la media",
                              "de la energía eléctrica diaria que se destina al país",
                              "para cada estación del año, y es expresada en GWh.")
 

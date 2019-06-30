@@ -23,4 +23,4 @@ grafico.observacion <- paste("<p>A.", grafico1.observacion, "</p>",
                              "<p>...</p>")
 
 
-grafico <- plot_grid(grafico1, grafico2, nrow=2, rel_heights = c(1,1))
+grafico <- plot_grid(grafico1, grafico2, nrow=1, rel_heights = c(1,1))
