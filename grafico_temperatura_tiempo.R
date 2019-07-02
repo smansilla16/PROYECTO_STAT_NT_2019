@@ -5,7 +5,7 @@ grafico.titulo <- "¿Hay alguna tendencia en la temperatura con el paso de los a
 grafico.descripcion <- paste("Gráfico de líneas de la temperatura media mensual en cada año,",
                              "para el período comprendido entre el", ajustes$rango[1],
                              "y el", ajustes$rango[2], ". Los años quedan representados por colores",
-                             "del rojo al verde (", rango.min, " - ",rango.max, "). Se muestran entre las
+                             "del rojo al verde (", year(rango.min), " - ",year(rango.max), "). Se muestran entre las
                               líneas horizontales de máxima (rojo), media (negro) y mínima (azul)
                               temperatura media histórica diaria.")
 
@@ -14,7 +14,8 @@ grafico.observacion <- paste("Podemos observar la relación clara entre el mes d
                              de una relación entre la temperatura y el año. Algunos de los años más recientes (verde) 
                              tienen asociada una temperatura mayor y están por encima de los primeros años (rojo).
                              En fuentes online, donde los registros contienen un lapso temporal mayor, es posible ver estas diferencias
-                             si uno además tiene la temperatura media global. Ver: https://www.bbc.com/mundo/noticias-46426822")
+                             si uno además tiene la temperatura media global, por ejemplo en BBC News artículo sobre Calentamieto global
+                             al 2018 y proyecciones. @ref.noticia.cambiocli")
 
 grafico <-   
   clima.datos %>% select(Fecha, temp_c) %>%

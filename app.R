@@ -163,6 +163,7 @@ server <- function(input, output) {
       if(input$tabs == "grafico7")
       {
         source("grafico_temperatura_tiempo.R", encoding = "UTF-8")
+        grafico.observacion <- refs.traduce(grafico.observacion)
       }
       
       if(input$tabs == "grafico8")

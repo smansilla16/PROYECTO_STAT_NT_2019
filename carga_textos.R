@@ -15,12 +15,15 @@ if(!exists("textos_cargados") || !textos_cargados)
   refs.clima <- list(ref = "@ref.clima",
                           url = "https://www7.ncdc.noaa.gov/CDO/cdoselect.cmd?datasetabbv=GSOD&countryabbv=&georegionabbv=")
   
+  ref.noticia.cambiocli <- list(ref = "@ref.noticia.cambiocli",
+                                url = "https://www.bbc.com/mundo/noticias-46426822")
+  
   refs.2anchor <- function(x, t){
     return(paste0("[<a href='", x, "'>", t, "</a>]"))
   }
   
   refs.traduce <- function(x){
-      refs = list(refs.clima, refs.ute)
+      refs = list(refs.clima, refs.ute, ref.noticia.cambiocli)
       i = 1
       for(r in refs)
       {
