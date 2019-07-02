@@ -1,5 +1,6 @@
 ---
 title: 'Proyecto final - Consumo de Energía Eléctrica y Clima'
+author: Fransisco Bonara - Santiago Mansilla - Diego Penza.
 csl: springer-lecture-notes-in-computer-science.csl
 link-citations: yes
 output:
